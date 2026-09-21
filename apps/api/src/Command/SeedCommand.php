@@ -114,7 +114,7 @@ final class SeedCommand extends Command
             $p('Grilled Tilapia with Side of Choice', 'grills', 'Screenshot-2026-08-20-123926.png', [['With fried yam', 3500, 'Serves 1–2'], ['With fried plantain', 3500, 'Serves 1–2'], ['With potato fries', 3500, 'Serves 1–2'], ['With sweet potato fries', 3500, 'Serves 1–2']], 'Whole tilapia, scored, marinated and grilled. Pick your side.', 'A whole tilapia, scored and marinated in pepper and herbs, grilled until the skin blisters. Comes with pepper sauce and your choice of side.', 2, true, ['Seafood']),
             $p('Assortment Platter', 'platters', 'Screenshot-2026-08-20-123846.png', [['Small', 10500, 'Serves 8–10'], ['Medium', 19000, 'Serves 15–20'], ['Large', 34000, 'Serves 30–35']], 'Some of every pastry and small chop, beautifully arranged.', "Can't decide? This platter brings together samosas, spring rolls, puff puff, shrimp, pies and more, arranged to look as good as it tastes. Ideal for birthdays and office gatherings.", 0, true, ['Best for events']),
             ...array_map(
-                static fn (array $r): array => $p($r[0], $r[1], '/img/menu/' . $r[2] . '.jpg', $r[3], $r[4], $r[4], $r[5], false, $r[6]),
+                static fn (array $r): array => $p($r[0], $r[1], '/img/menu/' . $r[2] . '.jpg', $r[3], $r[4], $r[4], $r[5], in_array('Best seller', $r[6], true) || in_array('Signature', $r[6], true), $r[6]),
                 self::extendedMenu(),
             ),
         ];

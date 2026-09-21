@@ -28,10 +28,12 @@
 
     <nav class="filters__group" aria-label="Menu categories">
       <h2>Category</h2>
-      <a routerLink="/menu" queryParamsHandling="preserve" class="cat-link" [class.is-active]="!category()">All dishes</a>
+      <a routerLink="/menu" queryParamsHandling="preserve" class="cat-link" [class.is-active]="!category()">
+        <app-category-icon slug="all" /><span>All dishes</span>
+      </a>
       @for (cat of categories(); track cat.id) {
         <a [routerLink]="['/menu', cat.slug]" queryParamsHandling="preserve" class="cat-link" [class.is-active]="cat.slug === category()">
-          {{ cat.name }} <small>{{ cat.product_count }}</small>
+          <app-category-icon [slug]="cat.slug" /><span>{{ cat.name }}</span><small>{{ cat.product_count }}</small>
         </a>
       }
     </nav>

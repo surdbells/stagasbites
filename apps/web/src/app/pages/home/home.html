@@ -76,18 +76,96 @@
     <div class="grid">
       @if (featured(); as items) {
         @for (product of items; track product.id; let i = $index) {
-          <app-product-card [product]="product" [appReveal]="(i % 4) * 80" />
+          <app-product-card [product]="product" [appReveal]="(i % 5) * 70" />
         } @empty {
           <p class="text-soft">Our menu is being updated. Check back shortly.</p>
         }
       } @else {
-        @for (s of [0, 1, 2, 3]; track s) {
+        @for (s of [0, 1, 2, 3, 4]; track s) {
           <div class="skeleton" style="aspect-ratio: 3 / 4"></div>
         }
       }
     </div>
   </div>
 </section>
+
+<!-- Format 2: horizontal rail of tall photo cards -->
+<section class="section rail-section">
+  <div class="container">
+    <header class="section__head section__head--row" appReveal>
+      <div>
+        <p class="eyebrow">Fresh off the flame</p>
+        <h2>The grill <em>never sleeps</em></h2>
+      </div>
+      <div class="rail__nav">
+        <button type="button" (click)="scrollRail(grillRail, -1)" aria-label="Scroll grills left">‹</button>
+        <button type="button" (click)="scrollRail(grillRail, 1)" aria-label="Scroll grills right">›</button>
+        <a routerLink="/menu/grills" class="btn btn--ghost btn--sm">All grills</a>
+      </div>
+    </header>
+  </div>
+  <div class="rail" #grillRail tabindex="0" aria-label="Grilled dishes, scroll horizontally">
+    @for (p of grills() ?? []; track p.id) {
+      <article class="tall">
+        <a [routerLink]="['/product', p.slug]" class="tall__link" [attr.aria-label]="p.name">
+          <img [src]="p.image_url || '/placeholder.svg'" [alt]="p.name" width="420" height="560" loading="lazy" />
+        </a>
+        @if (p.spice_level > 0) {
+          <span class="tall__heat">{{ ['', 'Mild', 'Medium', 'Hot'][p.spice_level] }}</span>
+        }
+        <div class="tall__body">
+          <h3>{{ p.name }}</h3>
+          <p>{{ p.short_description }}</p>
+          <div class="tall__foot">
+            <span>from <strong>{{ p.price_from | money }}</strong></span>
+            <button type="button" class="btn btn--sm" (click)="quickAdd(p)">Add</button>
+          </div>
+        </div>
+      </article>
+    } @empty {
+      @for (s of [0, 1, 2, 3]; track s) { <div class="skeleton tall"></div> }
+    }
+  </div>
+</section>
+
+<!-- Format 3: one hero platter with its sizes, the rest as a compact list -->
+@if (platters(); as list) {
+  @if (list[0]; as star) {
+    <section class="section section--tint">
+      <div class="container spotlight" appReveal>
+        <a class="spotlight__media" [routerLink]="['/product', star.slug]">
+          <img [src]="star.image_url || '/placeholder.svg'" [alt]="star.name" width="900" height="700" loading="lazy" />
+          <span class="spotlight__flag">Party pick</span>
+        </a>
+        <div class="spotlight__body">
+          <p class="eyebrow">Feed the whole party</p>
+          <h2>{{ star.name }}</h2>
+          <p class="lead">{{ star.description || star.short_description }}</p>
+          <ul class="spotlight__sizes">
+            @for (o of star.options; track o.id) {
+              <li><span>{{ o.label }} <small>{{ o.serves }}</small></span><strong>{{ o.price | money }}</strong></li>
+            }
+          </ul>
+          <div class="hero__cta">
+            <a [routerLink]="['/product', star.slug]" class="btn">Choose a size</a>
+            <a routerLink="/menu/platters" class="btn btn--ghost">All platters</a>
+          </div>
+        </div>
+        <ul class="spotlight__more">
+          @for (p of list.slice(1); track p.id) {
+            <li>
+              <a [routerLink]="['/product', p.slug]">
+                <img [src]="p.image_url || '/placeholder.svg'" alt="" width="72" height="72" loading="lazy" />
+                <span><strong>{{ p.name }}</strong><small>{{ p.options[0]?.serves }}</small></span>
+                <em>{{ p.price_from | money }}</em>
+              </a>
+            </li>
+          }
+        </ul>
+      </div>
+    </section>
+  }
+}
 
 <section class="section container">
   <header class="section__head" appReveal>
@@ -103,6 +181,78 @@
       </li>
     }
   </ol>
+</section>
+
+<!-- Format 4: mosaic, one large tile and four small -->
+<section class="section section--tint">
+  <div class="container">
+    <header class="section__head section__head--row" appReveal>
+      <div>
+        <p class="eyebrow">Rice &amp; mains</p>
+        <h2>Jollof that <em>starts arguments</em></h2>
+      </div>
+      <a routerLink="/menu/rice-mains" class="btn btn--ghost">See all mains</a>
+    </header>
+    <div class="mosaic">
+      @for (p of mains() ?? []; track p.id; let i = $index) {
+        <a class="mosaic__tile" [class.mosaic__tile--lead]="i === 0" [routerLink]="['/product', p.slug]" [appReveal]="i * 70">
+          <img [src]="p.image_url || '/placeholder.svg'" [alt]="p.name" width="800" height="800" loading="lazy" />
+          <span class="mosaic__text">
+            <strong>{{ p.name }}</strong>
+            @if (i === 0) { <span>{{ p.short_description }}</span> }
+            <em>from {{ p.price_from | money }}</em>
+          </span>
+        </a>
+      }
+    </div>
+  </div>
+</section>
+
+<!-- Format 5: numbered editorial list -->
+<section class="section container">
+  <div class="ranked">
+    <header class="ranked__head" appReveal>
+      <p class="eyebrow">Small spend, big flavour</p>
+      <h2>The under <em>$20</em> club</h2>
+      <p class="lead">Snack packs, dips and quick bites that will not dent the budget. Tap the plus to drop one straight into your order.</p>
+      <a routerLink="/menu" class="btn btn--ghost btn--sm">Browse the full menu</a>
+    </header>
+    <ol class="ranked__list">
+      @for (p of bargains() ?? []; track p.id; let i = $index) {
+        <li [appReveal]="i * 60">
+          <span class="ranked__n">{{ i + 1 < 10 ? '0' + (i + 1) : i + 1 }}</span>
+          <a [routerLink]="['/product', p.slug]" class="ranked__name">
+            <strong>{{ p.name }}</strong>
+            <small>{{ p.category?.name }}</small>
+          </a>
+          <span class="ranked__dots" aria-hidden="true"></span>
+          <span class="ranked__price">{{ p.price_from | money }}</span>
+          <button type="button" class="ranked__add" (click)="quickAdd(p)" [attr.aria-label]="'Add ' + p.name + ' to cart'">+</button>
+        </li>
+      }
+    </ol>
+  </div>
+</section>
+
+<!-- Format 6: pill-shaped add-ons strip -->
+<section class="extras">
+  <div class="container">
+    <header class="extras__head" appReveal>
+      <h2>Don’t forget <em>the extras</em></h2>
+      <p>Cold drinks, sides and sauces to finish the order.</p>
+    </header>
+    <div class="extras__strip">
+      @for (p of extras(); track p.id) {
+        <div class="pill">
+          <a [routerLink]="['/product', p.slug]">
+            <img [src]="p.image_url || '/placeholder.svg'" alt="" width="56" height="56" loading="lazy" />
+            <span><strong>{{ p.name }}</strong><small>{{ p.price_from | money }}</small></span>
+          </a>
+          <button type="button" (click)="quickAdd(p)" [attr.aria-label]="'Add ' + p.name + ' to cart'">+</button>
+        </div>
+      }
+    </div>
+  </div>
 </section>
 
 <section class="cater">

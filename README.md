@@ -7,7 +7,9 @@ Ecommerce platform for Staga's Bites: Nigerian small chops, pastries and grills 
 | `apps/api` | PHP 8.3 · Slim 4 · PHP-DI · Doctrine ORM + Migrations · PostgreSQL |
 | `apps/web` | Angular 22 SPA (no SSR) · signals · SCSS design system · self-hosted fonts |
 | `docker-compose.yml` | Local PostgreSQL (host port **5439**) |
-| `docker/nginx` | Production vhost |
+| `apps/web/functions` | Cloudflare Pages edge functions (SEO tags, sitemap, robots) |
+| `docker/nginx` | nginx rules for the API vhost |
+| `DEPLOYMENT_RUNBOOK.md` | Going live: Cloudflare Pages + aaPanel |
 
 Payments are **Stripe Checkout** (hosted; card data never touches this server). Transactional email is **ZeptoMail** over its HTTP API.
 
@@ -60,6 +62,12 @@ The key never reaches the browser: the API fetches the reviews and caches them f
 set, the section still shows the rating with "read" and "write a review" links. Google returns at most five
 reviews per listing through this API.
 
+## Deployment
+
+The storefront deploys to **Cloudflare Pages** from GitHub on every push to `main`; the API runs on a Linux
+server with **aaPanel**. Full steps, rollback, backups and troubleshooting are in
+[DEPLOYMENT_RUNBOOK.md](DEPLOYMENT_RUNBOOK.md).
+
 ## SEO without SSR
 
 The Angular app is a plain client-rendered SPA. For crawlers and link previews, the API serves the
@@ -67,6 +75,9 @@ built `index.html` for every storefront URL with the route's `<title>`, descript
 Open Graph/Twitter tags and JSON-LD already injected (`src/Module/Seo/SeoController.php`), returns a
 real `404` for unknown URLs, and generates `/sitemap.xml` and `/robots.txt` from the database.
 Once Angular boots, `SeoService` keeps the same tags in sync on navigation.
+
+On Cloudflare Pages the same job is done at the edge: `apps/web/functions/_middleware.ts` fetches the tags from
+`GET /api/v1/seo/meta?path=...` and rewrites `index.html` before it is served.
 
 ## Useful commands
 

@@ -6,13 +6,14 @@ import { catchError, of } from 'rxjs';
 import { CatalogService, ProductQuery } from '../../core/catalog.service';
 import { PageMeta, Product } from '../../core/models';
 import { SeoService } from '../../core/seo.service';
+import { CategoryIcon } from '../../shared/category-icon';
 import { ProductCard } from '../../shared/product-card';
 
-const PER_PAGE = 12;
+const PER_PAGE = 10;
 
 @Component({
   selector: 'app-menu',
-  imports: [RouterLink, FormsModule, ProductCard],
+  imports: [RouterLink, FormsModule, ProductCard, CategoryIcon],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './menu.html',
   styleUrl: './menu.scss',

@@ -62,12 +62,13 @@ class ProductRepository extends BaseRepository
             $qb->andWhere('p.spiceLevel <= :spice')->setParameter('spice', $filters['max_spice']);
         }
         // Price filters compare against the cheapest size, which is the "from" price shoppers see.
-        $minPriceDql = '(SELECT MIN(fo.price) FROM ' . ProductOption::class . ' fo WHERE fo.product = p)';
+        // Each subquery needs its own alias: DQL rejects a repeated one when both bounds are set.
+        $fromPrice = static fn (string $alias): string => sprintf('(SELECT MIN(%1$s.price) FROM %2$s %1$s WHERE %1$s.product = p)', $alias, ProductOption::class);
         if (isset($filters['min_price'])) {
-            $qb->andWhere($minPriceDql . ' >= :minPrice')->setParameter('minPrice', $filters['min_price']);
+            $qb->andWhere($fromPrice('lo') . ' >= :minPrice')->setParameter('minPrice', $filters['min_price']);
         }
         if (isset($filters['max_price'])) {
-            $qb->andWhere($minPriceDql . ' <= :maxPrice')->setParameter('maxPrice', $filters['max_price']);
+            $qb->andWhere($fromPrice('hi') . ' <= :maxPrice')->setParameter('maxPrice', $filters['max_price']);
         }
 
         $sort = $filters['sort'] ?? 'featured';

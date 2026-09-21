@@ -3,7 +3,7 @@
   grid-template-columns: 1fr 400px;
   gap: 2.5rem;
   align-items: start;
-  padding-block: 3rem clamp(4rem, 8vw, 7rem);
+  padding-block: 3rem clamp(2.5rem, 5vw, 4rem);
 
   &__empty {
     grid-column: 1 / -1;

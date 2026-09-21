@@ -7,6 +7,7 @@ namespace StagasBites\Module\Seo;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use StagasBites\Entity\Product;
+use StagasBites\Helper\JsonResponse;
 use StagasBites\Helper\Str;
 use StagasBites\Repository\CategoryRepository;
 use StagasBites\Repository\ProductRepository;
@@ -84,13 +85,42 @@ final class SeoController
         return $response->withHeader('Content-Type', 'application/xml; charset=utf-8')->withHeader('Cache-Control', 'public, max-age=3600');
     }
 
+    /**
+     * The same per-route metadata as JSON. Used when the storefront is hosted on a CDN (Cloudflare Pages),
+     * where an edge function writes these tags into index.html instead of this server.
+     */
+    public function meta(Request $request, Response $response): Response
+    {
+        $raw = (string) ($request->getQueryParams()['path'] ?? '/');
+        $path = '/' . trim((string) preg_replace('#[^A-Za-z0-9/_-]#', '', mb_substr($raw, 0, 300)), '/');
+        $meta = $this->resolve($path);
+
+        return JsonResponse::success($response, $this->present($meta, $path) + $meta)
+            ->withHeader('Cache-Control', 'public, max-age=300');
+    }
+
+    /**
+     * @param array{title: string, description: string, image: ?string, type: string, noindex: bool, status: int, json_ld: list<array<string, mixed>>} $meta
+     *
+     * @return array{title: string, url: string, image: string}
+     */
+    private function present(array $meta, string $path): array
+    {
+        $image = $meta['image'] ?? '/og-default.jpg';
+
+        return [
+            'title' => str_contains($meta['title'], self::SITE_NAME) ? $meta['title'] : $meta['title'] . ' | ' . self::SITE_NAME,
+            'url' => $this->siteUrl . ($path === '/' ? '/' : $path),
+            'image' => str_starts_with($image, 'http') ? $image : $this->siteUrl . $image,
+        ];
+    }
+
     /** Catch-all for storefront URLs: serves index.html with the route's metadata baked in. */
     public function spa(Request $request, Response $response): Response
     {
+        // No local build means the storefront lives elsewhere (Cloudflare Pages); this host is API only.
         if (!is_file($this->spaIndexPath)) {
-            $response->getBody()->write('Storefront build not found. Run "npm run build" in apps/web.');
-
-            return $response->withStatus(503)->withHeader('Content-Type', 'text/plain');
+            return JsonResponse::error($response, 'Not found. The storefront is served from ' . $this->siteUrl, 404);
         }
 
         $path = '/' . trim($request->getUri()->getPath(), '/');
@@ -160,10 +190,7 @@ final class SeoController
      */
     private function inject(string $html, array $meta, string $path): string
     {
-        $title = str_contains($meta['title'], self::SITE_NAME) ? $meta['title'] : $meta['title'] . ' | ' . self::SITE_NAME;
-        $url = $this->siteUrl . ($path === '/' ? '/' : $path);
-        $image = $meta['image'] ?? $this->siteUrl . '/og-default.jpg';
-        $image = str_starts_with($image, 'http') ? $image : $this->siteUrl . $image;
+        ['title' => $title, 'url' => $url, 'image' => $image] = $this->present($meta, $path);
 
         $tags = [
             '<meta name="description" content="' . Str::e($meta['description']) . '">',

@@ -3,7 +3,7 @@
   grid-template-columns: 270px 1fr;
   gap: clamp(1.5rem, 3vw, 3rem);
   align-items: start;
-  padding-block: 2.5rem clamp(4rem, 8vw, 7rem);
+  padding-block: 2.5rem clamp(2.5rem, 5vw, 4rem);
 }
 
 .filters {
@@ -41,12 +41,21 @@
 
 .cat-link {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  gap: 0.7rem;
   padding: 0.5rem 0.7rem;
   margin-inline: -0.7rem;
   border-radius: var(--radius-sm);
   color: var(--text-2);
   transition: background 0.2s;
+
+  app-category-icon {
+    color: var(--ember-500);
+  }
+
+  span {
+    flex: 1;
+  }
 
   small {
     color: var(--muted);
@@ -63,6 +72,10 @@
 
     small {
       color: rgb(255 255 255 / 0.8);
+    }
+
+    app-category-icon {
+      color: #fff;
     }
   }
 }

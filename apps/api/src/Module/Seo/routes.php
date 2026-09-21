@@ -6,6 +6,7 @@ use Slim\App;
 use StagasBites\Module\Seo\SeoController;
 
 return function (App $app): void {
+    $app->get('/api/v1/seo/meta', [SeoController::class, 'meta']);
     $app->get('/robots.txt', [SeoController::class, 'robots']);
     $app->get('/sitemap.xml', [SeoController::class, 'sitemap']);
 

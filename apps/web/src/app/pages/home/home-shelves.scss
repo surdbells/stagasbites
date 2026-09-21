@@ -1,0 +1,558 @@
+// Home page product shelves. Each one uses a different display format on purpose,
+// so the page never reads as the same card grid repeated.
+
+// Rail of tall photo cards. Bleeds to the screen edge so it reads as scrollable.
+.rail-section {
+  padding-bottom: clamp(1.75rem, 3.5vw, 3rem);
+}
+
+.rail__nav {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  button {
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--border-strong);
+    border-radius: 50%;
+    font-size: 1.4rem;
+    line-height: 1;
+    transition: background 0.2s;
+
+    &:hover {
+      background: var(--surface-2);
+    }
+  }
+}
+
+.rail {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: clamp(230px, 22vw, 320px);
+  gap: 1.1rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: clamp(1.1rem, 5vw, 7rem);
+  padding: 0.4rem clamp(1.1rem, 5vw, 7rem) 1.2rem;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.tall {
+  position: relative;
+  aspect-ratio: 3 / 4.3;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  scroll-snap-align: start;
+  isolation: isolate;
+  color: #fff;
+
+  &__link {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 1.1s var(--ease);
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(15, 11, 9, 0) 35%, rgba(15, 11, 9, 0.9) 90%);
+    }
+  }
+
+  &:hover img {
+    transform: scale(1.07);
+  }
+
+  &__heat {
+    position: absolute;
+    top: 0.9rem;
+    left: 0.9rem;
+    padding: 0.25rem 0.7rem;
+    border-radius: var(--radius-pill);
+    background: var(--ember-500);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  &__body {
+    position: absolute;
+    inset: auto 0 0;
+    padding: 1.2rem;
+    pointer-events: none;
+
+    h3 {
+      color: #fff;
+      font-size: 1.35rem;
+      margin-bottom: 0.3rem;
+    }
+
+    p {
+      font-size: 0.85rem;
+      line-height: 1.45;
+      color: rgb(255 255 255 / 0.82);
+      margin-bottom: 0.9rem;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+  }
+
+  &__foot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    pointer-events: auto;
+
+    strong {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 500;
+    }
+  }
+}
+
+// Spotlight: big photo, size ladder, then a compact list of the other platters.
+.spotlight {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr 0.9fr;
+  gap: clamp(1.5rem, 3vw, 3rem);
+  align-items: center;
+
+  &__media {
+    position: relative;
+    display: block;
+    aspect-ratio: 5 / 4;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 1.1s var(--ease);
+    }
+
+    &:hover img {
+      transform: scale(1.05);
+    }
+  }
+
+  &__flag {
+    position: absolute;
+    top: 1.4rem;
+    left: -2.8rem;
+    padding: 0.35rem 3.2rem;
+    background: var(--gold-400);
+    color: #fff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    transform: rotate(-35deg);
+  }
+
+  &__body h2 {
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+  }
+
+  &__sizes {
+    list-style: none;
+    margin: 1.2rem 0 0;
+    padding: 0;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px dashed var(--border-strong);
+    }
+
+    small {
+      margin-left: 0.4rem;
+      color: var(--text-soft);
+    }
+
+    strong {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+  }
+
+  &__more {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.7rem;
+
+    a {
+      display: grid;
+      grid-template-columns: 72px 1fr auto;
+      align-items: center;
+      gap: 0.9rem;
+      padding: 0.6rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      transition:
+        transform 0.35s var(--ease),
+        border-color 0.2s;
+
+      &:hover {
+        transform: translateX(6px);
+        border-color: var(--ember-500);
+      }
+    }
+
+    img {
+      width: 72px;
+      height: 72px;
+      object-fit: cover;
+      border-radius: var(--radius-sm);
+    }
+
+    strong {
+      display: block;
+      font-weight: 600;
+      color: var(--heading);
+    }
+
+    small {
+      color: var(--text-soft);
+    }
+
+    em {
+      font-family: var(--font-display);
+      font-style: normal;
+      font-size: 1.1rem;
+    }
+  }
+}
+
+// Mosaic: one lead tile spanning two rows, four supporting tiles.
+.mosaic {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr;
+  grid-template-rows: repeat(2, clamp(170px, 17vw, 250px));
+  gap: 1rem;
+
+  &__tile {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    isolation: isolate;
+    color: #fff;
+
+    &--lead {
+      grid-row: 1 / -1;
+    }
+
+    img {
+      position: absolute;
+      inset: 0;
+      z-index: -2;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 1.1s var(--ease);
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: linear-gradient(180deg, rgba(15, 11, 9, 0) 40%, rgba(15, 11, 9, 0.85));
+    }
+
+    &:hover img {
+      transform: scale(1.07);
+    }
+  }
+
+  &__text {
+    position: absolute;
+    inset: auto 0 0;
+    display: grid;
+    gap: 0.2rem;
+    padding: 1.2rem;
+
+    strong {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 500;
+      line-height: 1.15;
+    }
+
+    span {
+      font-size: 0.9rem;
+      color: rgb(255 255 255 / 0.85);
+      max-width: 46ch;
+    }
+
+    em {
+      font-style: normal;
+      font-size: 0.85rem;
+      color: var(--gold-soft);
+    }
+  }
+
+  &__tile--lead &__text strong {
+    font-size: clamp(1.6rem, 2.6vw, 2.3rem);
+  }
+}
+
+// Numbered editorial list with dotted leaders, like a printed menu.
+.ranked {
+  display: grid;
+  grid-template-columns: 0.8fr 1.4fr;
+  gap: clamp(2rem, 5vw, 5rem);
+  align-items: start;
+
+  &__head {
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+  }
+
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      display: grid;
+      grid-template-columns: auto auto 1fr auto auto;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.1rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+  }
+
+  &__n {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1px var(--ember-400);
+  }
+
+  &__name {
+    strong {
+      display: block;
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 500;
+      color: var(--heading);
+      transition: color 0.2s;
+    }
+
+    small {
+      color: var(--text-soft);
+    }
+
+    &:hover strong {
+      color: var(--ember-500);
+    }
+  }
+
+  &__dots {
+    height: 1px;
+    border-bottom: 2px dotted var(--border-strong);
+    transform: translateY(0.3rem);
+  }
+
+  &__price {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+  }
+
+  &__add {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: var(--ember-500);
+    color: #fff;
+    font-size: 1.3rem;
+    line-height: 1;
+    transition: transform 0.3s var(--ease);
+
+    &:hover {
+      transform: rotate(90deg) scale(1.08);
+    }
+  }
+}
+
+// Add-ons strip of pill cards on a dark band.
+.extras {
+  padding-block: clamp(2rem, 4vw, 3.25rem);
+  background: var(--heading);
+  color: #fff;
+
+  &__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 1.5rem;
+    margin-bottom: 1.6rem;
+
+    h2 {
+      margin: 0;
+      color: #fff;
+      font-size: clamp(1.7rem, 3vw, 2.4rem);
+    }
+
+    em {
+      font-style: italic;
+      color: var(--gold-soft);
+    }
+
+    p {
+      margin: 0;
+      color: rgb(255 255 255 / 0.7);
+    }
+  }
+
+  &__strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+  }
+}
+
+.pill {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem;
+  border-radius: var(--radius-pill);
+  background: rgb(255 255 255 / 0.08);
+  border: 1px solid rgb(255 255 255 / 0.14);
+  transition: background 0.2s;
+
+  &:hover {
+    background: rgb(255 255 255 / 0.14);
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding-right: 0.4rem;
+  }
+
+  img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  strong {
+    display: block;
+    font-size: 0.92rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  small {
+    color: var(--gold-soft);
+  }
+
+  button {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--ember-500);
+    color: #fff;
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+}
+
+// Five-across product grids step down with the viewport.
+.grid {
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.1rem;
+}
+
+@media (max-width: 1400px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 1100px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .spotlight {
+    grid-template-columns: 1fr 1fr;
+
+    &__more {
+      grid-column: 1 / -1;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+  }
+}
+
+@media (max-width: 800px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+  }
+
+  .spotlight,
+  .ranked {
+    grid-template-columns: 1fr;
+  }
+
+  .ranked__head {
+    position: static;
+  }
+
+  .ranked__dots {
+    display: none;
+  }
+
+  .ranked__list li {
+    grid-template-columns: auto 1fr auto auto;
+  }
+
+  .mosaic {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto;
+    grid-auto-rows: 170px;
+
+    &__tile--lead {
+      grid-column: 1 / -1;
+      grid-row: auto;
+      min-height: 240px;
+    }
+  }
+
+  .rail__nav button {
+    display: none;
+  }
+}

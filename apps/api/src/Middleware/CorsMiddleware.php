@@ -26,7 +26,7 @@ final class CorsMiddleware implements MiddlewareInterface
             : $handler->handle($request);
 
         $origin = $request->getHeaderLine('Origin');
-        if ($origin === '' || !in_array($origin, $this->allowedOrigins, true)) {
+        if ($origin === '' || !$this->isAllowed($origin)) {
             return $response;
         }
 
@@ -36,5 +36,25 @@ final class CorsMiddleware implements MiddlewareInterface
             ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE, OPTIONS')
             ->withHeader('Access-Control-Allow-Headers', 'Authorization, Content-Type, Accept, X-Requested-With')
             ->withHeader('Access-Control-Max-Age', '86400');
+    }
+
+    /**
+     * Exact origins, plus "https://*.example.pages.dev" style entries for Cloudflare Pages preview deployments.
+     */
+    private function isAllowed(string $origin): bool
+    {
+        foreach ($this->allowedOrigins as $allowed) {
+            if ($allowed === $origin) {
+                return true;
+            }
+            if (str_contains($allowed, '://*.')) {
+                [$scheme, $suffix] = explode('://*', $allowed, 2);
+                if (str_starts_with($origin, $scheme . '://') && str_ends_with($origin, $suffix) && strlen($origin) > strlen($scheme . '://' . $suffix)) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 }
