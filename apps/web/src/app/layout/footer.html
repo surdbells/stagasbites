@@ -1,7 +1,16 @@
 <footer class="footer">
   <div class="container footer__cta">
-    <h2>Feeding a crowd this weekend?</h2>
-    <a routerLink="/menu" class="btn btn--gold">Pre-order now</a>
+    <div>
+      <h2>Get first dibs on weekend specials</h2>
+      <p class="text-soft">New dishes, seasonal platters and the odd discount. No spam — unsubscribe any time.</p>
+    </div>
+    <form class="footer__news" (ngSubmit)="subscribe()">
+      <input type="email" name="email" [(ngModel)]="email" placeholder="you@example.com" aria-label="Email address" autocomplete="email" required />
+      <button type="submit" class="btn" [disabled]="sending()">{{ sending() ? 'Joining…' : 'Subscribe' }}</button>
+      @if (newsletter(); as n) {
+        <p class="footer__news-msg" [class.is-error]="!n.ok" role="status">{{ n.text }}</p>
+      }
+    </form>
   </div>
 
   <div class="container footer__grid">
@@ -14,6 +23,14 @@
       <p class="footer__rating" aria-label="Rated 5 out of 5 on Google">
         <span aria-hidden="true">★★★★★</span> {{ site.rating.value.toFixed(1) }} · {{ site.rating.count }} Google reviews
       </p>
+      @if (settings(); as s) {
+        <div class="footer__social">
+          @if (s.instagram) { <a [href]="s.instagram" target="_blank" rel="noopener" aria-label="Instagram">Instagram</a> }
+          @if (s.facebook) { <a [href]="s.facebook" target="_blank" rel="noopener" aria-label="Facebook">Facebook</a> }
+          @if (s.whatsapp) { <a [href]="'https://wa.me/' + s.whatsapp" target="_blank" rel="noopener">WhatsApp</a> }
+          @if (s.google_reviews_url) { <a [href]="s.google_reviews_url" target="_blank" rel="noopener">Review us on Google</a> }
+        </div>
+      }
     </div>
 
     <nav aria-label="Menu categories">
@@ -23,6 +40,7 @@
       <a routerLink="/menu/snacks">Snacks &amp; Pastries</a>
       <a routerLink="/menu/platters">Platters &amp; Bulk</a>
       <a routerLink="/catering">Event Catering</a>
+      <a routerLink="/gallery">Gallery</a>
     </nav>
 
     <nav aria-label="Company">

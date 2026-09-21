@@ -36,6 +36,7 @@ export class AdminLayout {
     { path: '/admin/products', label: 'Products' },
     { path: '/admin/categories', label: 'Categories' },
     { path: '/admin/inquiries', label: 'Inquiries' },
+    { path: '/admin/subscribers', label: 'Subscribers' },
     { path: '/admin/coupons', label: 'Coupons' },
     { path: '/admin/settings', label: 'Settings' },
   ];

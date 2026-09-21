@@ -5,10 +5,11 @@ import { filter, map } from 'rxjs';
 import { CartDrawer } from './layout/cart-drawer';
 import { Footer } from './layout/footer';
 import { Header } from './layout/header';
+import { MobileDock } from './layout/mobile-dock';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, Header, Footer, CartDrawer],
+  imports: [RouterOutlet, Header, Footer, CartDrawer, MobileDock],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <a class="skip-link" href="#main">Skip to content</a>
@@ -21,6 +22,7 @@ import { Header } from './layout/header';
     @if (!isAdmin()) {
       <app-footer />
       <app-cart-drawer />
+      <app-mobile-dock />
     }
   `,
   styles: `

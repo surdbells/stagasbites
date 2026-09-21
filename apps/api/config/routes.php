@@ -12,6 +12,7 @@ return function (App $app): void {
     (require __DIR__ . '/../src/Module/Account/routes.php')($app);
     (require __DIR__ . '/../src/Module/Inquiry/routes.php')($app);
     (require __DIR__ . '/../src/Module/Admin/routes.php')($app);
+    (require __DIR__ . '/../src/Module/Newsletter/routes.php')($app);
 
     // Keep last: contains the catch-all that serves the storefront shell.
     (require __DIR__ . '/../src/Module/Seo/routes.php')($app);

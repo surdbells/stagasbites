@@ -44,6 +44,13 @@ final class CatalogController
             'search' => isset($q['search']) ? mb_substr((string) $q['search'], 0, 80) : '',
             'featured' => filter_var($q['featured'] ?? false, FILTER_VALIDATE_BOOLEAN),
             'sort' => (string) ($q['sort'] ?? 'featured'),
+            'min_price' => is_numeric($q['min_price'] ?? null) ? max(0, (int) $q['min_price']) : null,
+            'max_price' => is_numeric($q['max_price'] ?? null) ? max(0, (int) $q['max_price']) : null,
+            'max_spice' => is_numeric($q['max_spice'] ?? null) ? max(0, min(3, (int) $q['max_spice'])) : null,
+            'ids' => array_slice(array_values(array_filter(
+                explode(',', (string) ($q['ids'] ?? '')),
+                static fn (string $id): bool => preg_match('/^[0-9a-f-]{36}$/i', $id) === 1,
+            )), 0, 60),
         ], $page, $perPage);
 
         return self::cacheable(JsonResponse::paginated(
@@ -55,9 +62,6 @@ final class CatalogController
         ));
     }
 
-    /**
-     * @param array{slug: string} $args
-     */
     public function product(Request $request, Response $response, string $slug): Response
     {
         $product = $this->products->findBySlug($slug);

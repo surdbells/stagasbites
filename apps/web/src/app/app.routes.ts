@@ -8,6 +8,8 @@ export const routes: Routes = [
   { path: 'product/:slug', loadComponent: () => import('./pages/product/product').then((m) => m.ProductPage) },
   { path: 'cart', loadComponent: () => import('./pages/cart/cart').then((m) => m.CartPage) },
   { path: 'checkout', loadComponent: () => import('./pages/checkout/checkout').then((m) => m.Checkout) },
+  { path: 'wishlist', loadComponent: () => import('./pages/wishlist/wishlist').then((m) => m.Wishlist) },
+  { path: 'gallery', loadComponent: () => import('./pages/gallery/gallery').then((m) => m.Gallery) },
   { path: 'order/:id', loadComponent: () => import('./pages/order/order').then((m) => m.OrderPage) },
   { path: 'catering', loadComponent: () => import('./pages/catering/catering').then((m) => m.Catering) },
   { path: 'about', loadComponent: () => import('./pages/about/about').then((m) => m.About) },

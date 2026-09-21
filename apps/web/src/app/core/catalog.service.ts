@@ -8,6 +8,11 @@ export interface ProductQuery {
   search?: string;
   featured?: boolean;
   sort?: 'featured' | 'name' | 'price_asc' | 'price_desc' | 'newest';
+  min_price?: number | null;
+  max_price?: number | null;
+  max_spice?: number | null;
+  /** Comma-separated product ids (wishlist). */
+  ids?: string;
   page?: number;
   per_page?: number;
 }

@@ -23,7 +23,7 @@ class ProductRepository extends BaseRepository
     }
 
     /**
-     * @param array{category?: string, search?: string, featured?: bool, sort?: string, include_unavailable?: bool} $filters
+     * @param array{category?: string, search?: string, featured?: bool, sort?: string, include_unavailable?: bool, min_price?: ?int, max_price?: ?int, max_spice?: ?int, ids?: list<string>} $filters
      *
      * @return array{items: list<Product>, total: int}
      */
@@ -45,6 +45,21 @@ class ProductRepository extends BaseRepository
         if (!empty($filters['search'])) {
             $qb->andWhere('LOWER(p.name) LIKE :q OR LOWER(p.shortDescription) LIKE :q')
                 ->setParameter('q', '%' . mb_strtolower(addcslashes($filters['search'], '%_')) . '%');
+        }
+
+        if (!empty($filters['ids'])) {
+            $qb->andWhere('p.id IN (:ids)')->setParameter('ids', $filters['ids']);
+        }
+        if (isset($filters['max_spice'])) {
+            $qb->andWhere('p.spiceLevel <= :spice')->setParameter('spice', $filters['max_spice']);
+        }
+        // Price filters compare against the cheapest size, which is the "from" price shoppers see.
+        $minPriceDql = '(SELECT MIN(fo.price) FROM ' . ProductOption::class . ' fo WHERE fo.product = p)';
+        if (isset($filters['min_price'])) {
+            $qb->andWhere($minPriceDql . ' >= :minPrice')->setParameter('minPrice', $filters['min_price']);
+        }
+        if (isset($filters['max_price'])) {
+            $qb->andWhere($minPriceDql . ' <= :maxPrice')->setParameter('maxPrice', $filters['max_price']);
         }
 
         $sort = $filters['sort'] ?? 'featured';

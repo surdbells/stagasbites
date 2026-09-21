@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, HostListener, inject, signal } from
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthStore } from '../core/auth.store';
 import { CartStore } from '../core/cart.store';
+import { WishlistStore } from '../core/wishlist.store';
 
 @Component({
   selector: 'app-header',
@@ -13,12 +14,14 @@ import { CartStore } from '../core/cart.store';
 export class Header {
   protected readonly cart = inject(CartStore);
   protected readonly auth = inject(AuthStore);
+  protected readonly wishlist = inject(WishlistStore);
   protected readonly scrolled = signal(false);
   protected readonly menuOpen = signal(false);
 
   protected readonly links = [
     { path: '/menu', label: 'Menu' },
     { path: '/catering', label: 'Catering' },
+    { path: '/gallery', label: 'Gallery' },
     { path: '/about', label: 'Our Story' },
     { path: '/contact', label: 'Contact' },
   ];

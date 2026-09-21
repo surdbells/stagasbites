@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, inject, input } from '@an
 import { RouterLink } from '@angular/router';
 import { CartStore } from '../core/cart.store';
 import { Product } from '../core/models';
+import { WishlistStore } from '../core/wishlist.store';
 import { MoneyPipe } from './money.pipe';
 
 @Component({
@@ -24,6 +25,10 @@ import { MoneyPipe } from './money.pipe';
           </span>
         }
       </a>
+      <button type="button" class="pcard__heart" [class.is-on]="wishlist.has(product().id)" (click)="wishlist.toggle(product().id)"
+              [attr.aria-pressed]="wishlist.has(product().id)" [attr.aria-label]="(wishlist.has(product().id) ? 'Remove ' : 'Save ') + product().name">
+        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 20s-7-4.400-7-10a4 4 0 0 1 7-2.600A4 4 0 0 1 19 10c0 5.600-7 10-7 10Z"/></svg>
+      </button>
       <div class="pcard__body">
         @if (product().category; as cat) {
           <span class="pcard__cat">{{ cat.name }}</span>
@@ -45,6 +50,7 @@ export class ProductCard {
   readonly product = input.required<Product>();
   readonly eager = input(false);
   private readonly cart = inject(CartStore);
+  protected readonly wishlist = inject(WishlistStore);
 
   protected readonly spice = computed(() => Array.from({ length: this.product().spice_level }, (_, i) => i));
 

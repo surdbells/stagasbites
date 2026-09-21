@@ -31,6 +31,21 @@ export class Menu {
 
   protected readonly search = signal('');
   protected readonly sort = signal<NonNullable<ProductQuery['sort']>>('featured');
+  /** Price bounds in dollars, as typed; null = no bound. */
+  protected readonly minPrice = signal<number | null>(null);
+  protected readonly maxPrice = signal<number | null>(null);
+  protected readonly maxSpice = signal<number | null>(null);
+  protected readonly filtersOpen = signal(false);
+  protected readonly activeFilters = computed(
+    () => [this.minPrice(), this.maxPrice(), this.maxSpice()].filter((v) => v !== null).length + (this.search() ? 1 : 0),
+  );
+  protected readonly heatChoices = [
+    { value: null, label: 'Any heat' },
+    { value: 0, label: 'No heat' },
+    { value: 1, label: 'Mild or less' },
+    { value: 2, label: 'Medium or less' },
+  ];
+
   protected readonly products = signal<Product[]>([]);
   protected readonly meta = signal<PageMeta | null>(null);
   protected readonly loading = signal(true);
@@ -48,6 +63,9 @@ export class Menu {
       this.category();
       this.sort();
       this.search();
+      this.minPrice();
+      this.maxPrice();
+      this.maxSpice();
       this.load(1);
     });
 
@@ -83,6 +101,18 @@ export class Menu {
     this.searchTimer = setTimeout(() => this.search.set(value.trim()), 300);
   }
 
+  setPrice(bound: 'min' | 'max', value: string): void {
+    const dollars = value === '' ? null : Math.max(0, Number(value));
+    (bound === 'min' ? this.minPrice : this.maxPrice).set(Number.isFinite(dollars as number) ? dollars : null);
+  }
+
+  clearFilters(): void {
+    this.minPrice.set(null);
+    this.maxPrice.set(null);
+    this.maxSpice.set(null);
+    this.search.set('');
+  }
+
   loadMore(): void {
     this.load((this.meta()?.page ?? 1) + 1);
   }
@@ -92,7 +122,16 @@ export class Menu {
     this.loading.set(true);
     this.failed.set(false);
     this.catalog
-      .products({ category: this.category(), search: this.search(), sort: this.sort(), page, per_page: PER_PAGE })
+      .products({
+        category: this.category(),
+        search: this.search(),
+        sort: this.sort(),
+        min_price: this.minPrice() === null ? null : Math.round(this.minPrice()! * 100),
+        max_price: this.maxPrice() === null ? null : Math.round(this.maxPrice()! * 100),
+        max_spice: this.maxSpice(),
+        page,
+        per_page: PER_PAGE,
+      })
       .subscribe({
         next: (res) => {
           if (id !== this.requestId) {
