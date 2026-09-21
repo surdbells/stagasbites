@@ -1,0 +1,10 @@
+{
+  "name": "Staga's Bites",
+  "short_name": "Staga's Bites",
+  "description": "Nigerian small chops, pastries & grills in Oakville, Ontario",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0b09",
+  "theme_color": "#0f0b09",
+  "icons": [{ "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

@@ -1,0 +1,40 @@
+.auth {
+  min-height: 100svh;
+  display: grid;
+  place-items: center;
+  padding: calc(var(--header-h) + 2rem) 1.25rem 4rem;
+  background:
+    radial-gradient(ellipse 50% 60% at 80% 10%, rgba(201, 48, 44, 0.25), transparent 65%),
+    radial-gradient(ellipse 40% 50% at 10% 90%, rgba(240, 178, 74, 0.12), transparent 60%);
+}
+
+.auth__card {
+  width: min(100%, 460px);
+
+  h1 {
+    font-size: 2.2rem;
+  }
+
+  .btn {
+    margin-top: 0.4rem;
+  }
+}
+
+.auth__links {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.4rem;
+  font-size: 0.92rem;
+  color: var(--text-soft);
+
+  a {
+    color: var(--gold-400);
+  }
+}
+
+.hint {
+  font-size: 0.8rem;
+  color: var(--muted);
+}

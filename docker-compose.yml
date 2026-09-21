@@ -1,0 +1,22 @@
+# Local development services. The API and Angular dev server run on the host
+# (composer serve / npm start); only PostgreSQL is containerised.
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: stagasbites-postgres
+    environment:
+      POSTGRES_DB: stagasbites
+      POSTGRES_USER: stagasbites
+      POSTGRES_PASSWORD: stagasbites
+    ports:
+      - "5439:5432" # 5439 on the host so it never collides with another local Postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U stagasbites"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  postgres_data:

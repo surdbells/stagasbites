@@ -1,0 +1,82 @@
+@switch (state()) {
+  @case ('loading') {
+    <section class="page-hero"><div class="container"><div class="skeleton" style="height: 4rem; max-width: 420px"></div></div></section>
+  }
+  @case ('missing') {
+    <section class="page-hero">
+      <div class="container">
+        <h1>We couldn’t find that order</h1>
+        <p class="lead">Check the link in your confirmation email, or contact us and we’ll look it up.</p>
+        <a routerLink="/contact" class="btn">Contact us</a>
+      </div>
+    </section>
+  }
+  @case ('ready') {
+    @if (order(); as o) {
+      <section class="page-hero">
+        <div class="container">
+          <p class="eyebrow">Order {{ o.order_number }}</p>
+          @if (awaitingPayment()) {
+            <h1>Confirming your payment…</h1>
+            <p class="lead">This usually takes a few seconds. If you closed the payment page, your order has not been placed.</p>
+          } @else if (o.status === 'cancelled' || o.status === 'refunded') {
+            <h1>Order {{ o.status }}</h1>
+            <p class="lead">Questions? Reply to your confirmation email or call {{ site.phone }}.</p>
+          } @else {
+            <h1>Thank you, {{ o.customer_first_name }}!</h1>
+            <p class="lead">Your order is confirmed and a receipt is on its way to {{ o.customer_email }}.</p>
+          }
+        </div>
+      </section>
+
+      <section class="container order">
+        @if (stepIndex() >= 0) {
+          <ol class="timeline" aria-label="Order progress">
+            @for (step of timeline; track step.status; let i = $index) {
+              <li [class.is-done]="i <= stepIndex()" [attr.aria-current]="i === stepIndex() ? 'step' : null">
+                <span></span>{{ step.label }}
+              </li>
+            }
+          </ol>
+        }
+
+        <div class="order__grid">
+          <div class="card">
+            <h2>{{ o.fulfilment_method === 'delivery' ? 'Delivery' : 'Pickup' }}</h2>
+            <p class="order__when">{{ o.fulfilment_date | date: 'EEEE, MMMM d' }}<br />{{ o.fulfilment_time_slot }}</p>
+            <p class="text-soft">
+              {{ o.fulfilment_method === 'delivery' ? o.delivery_address : 'Oakville, ON — we’ll text you the exact pickup address.' }}
+            </p>
+            @if (o.notes) {
+              <p class="text-soft"><strong>Your notes:</strong> {{ o.notes }}</p>
+            }
+          </div>
+
+          <div class="card">
+            <h2>Items</h2>
+            <ul class="order__items">
+              @for (item of o.items; track $index) {
+                <li>
+                  <span>{{ item.quantity }} × {{ item.name }} <small>{{ item.option_label }}</small></span>
+                  <span>{{ item.line_total | money: o.currency }}</span>
+                </li>
+              }
+            </ul>
+            <dl class="order__totals">
+              <div><dt>Subtotal</dt><dd>{{ o.subtotal | money: o.currency }}</dd></div>
+              @if (o.discount > 0) { <div><dt>Discount</dt><dd>−{{ o.discount | money: o.currency }}</dd></div> }
+              @if (o.delivery_fee > 0) { <div><dt>Delivery</dt><dd>{{ o.delivery_fee | money: o.currency }}</dd></div> }
+              <div><dt>Tax</dt><dd>{{ o.tax | money: o.currency }}</dd></div>
+              <div class="is-total"><dt>Total</dt><dd>{{ o.total | money: o.currency }}</dd></div>
+            </dl>
+          </div>
+        </div>
+
+        <div class="order__actions">
+          <a routerLink="/menu" class="btn btn--ghost">Order something else</a>
+          <a [href]="site.phoneHref" class="btn btn--ghost">Call {{ site.phone }}</a>
+        </div>
+      </section>
+    }
+  }
+}

@@ -1,0 +1,437 @@
+// Staga's Bites design system — warm, light and photo-led. Ember red + amber on cream.
+// Fonts are self-hosted variable files (no third-party request, no layout shift).
+@use '@fontsource-variable/fraunces/opsz.css';
+@use '@fontsource-variable/fraunces/opsz-italic.css';
+@use '@fontsource-variable/manrope/wght.css';
+
+:root {
+  --bg: #fffaf3;
+  --surface: #ffffff;
+  --surface-2: #faf2e6;
+  --surface-3: #f1e5d3;
+  --heading: #1d1410;
+  --text: #2e231d;
+  --text-2: #4a3c33;
+  --text-soft: #75665a;
+  --muted: #95867a;
+  --tint-rgb: 46 35 29;
+  --border: rgb(var(--tint-rgb) / 0.1);
+  --border-strong: rgb(var(--tint-rgb) / 0.2);
+
+  --ember-400: #e04a36;
+  --ember-500: #c9302c;
+  --ember-600: #a22529;
+  --ember-700: #7d1a1e;
+  --gold-400: #a8650a; // amber, dark enough to read as text on cream
+  --gold-500: #8a5208;
+  --gold-soft: #f7dfae;
+  --leaf-500: #2f7d4c;
+
+  --font-display: 'Fraunces Variable', 'Iowan Old Style', Georgia, serif;
+  --font-body: 'Manrope Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --radius-sm: 10px;
+  --radius: 16px;
+  --radius-lg: 26px;
+  --radius-pill: 999px;
+  --shadow: 0 22px 50px -24px rgb(var(--tint-rgb) / 0.35);
+  --shadow-ember: 0 12px 28px -12px rgba(201, 48, 44, 0.5);
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --header-h: 72px;
+  --container: 1240px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: 0;
+  background: none;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.015em;
+  margin: 0 0 0.5em;
+  color: var(--heading);
+}
+
+h1 {
+  font-size: clamp(2.6rem, 6.4vw, 5.4rem);
+}
+
+h2 {
+  font-size: clamp(2rem, 4.2vw, 3.4rem);
+}
+
+h3 {
+  font-size: clamp(1.3rem, 2vw, 1.7rem);
+}
+
+p {
+  margin: 0 0 1em;
+}
+
+::selection {
+  background: var(--ember-500);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold-400);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+// Full-bleed content with ~5% gutters; the clamp keeps phones comfortable and caps ultra-wide screens.
+.container {
+  width: 100%;
+  padding-inline: clamp(1.1rem, 5vw, 7rem);
+}
+
+.section {
+  padding-block: clamp(4rem, 9vw, 8rem);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-400);
+  margin-bottom: 1rem;
+
+  &::before {
+    content: '';
+    width: 28px;
+    height: 1px;
+    background: currentColor;
+  }
+}
+
+.lead {
+  font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+  color: var(--text-soft);
+  max-width: 60ch;
+}
+
+.text-soft {
+  color: var(--text-soft);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+// Buttons ------------------------------------------------------------------
+.btn {
+  --btn-bg: var(--ember-500);
+  --btn-fg: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 0.95rem 1.7rem;
+  border-radius: var(--radius-pill);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition:
+    transform 0.35s var(--ease),
+    box-shadow 0.35s var(--ease),
+    background 0.25s;
+  box-shadow: var(--shadow-ember);
+  white-space: nowrap;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    background: var(--ember-400);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  &--ghost {
+    --btn-bg: transparent;
+    --btn-fg: var(--heading);
+    border: 1px solid var(--border-strong);
+    box-shadow: none;
+
+    &:hover:not(:disabled) {
+      background: rgb(var(--tint-rgb) / 0.08);
+    }
+  }
+
+  &--gold {
+    --btn-bg: var(--gold-400);
+    --btn-fg: #fff;
+    box-shadow: 0 14px 40px -14px rgba(240, 178, 74, 0.5);
+
+    &:hover:not(:disabled) {
+      background: var(--gold-500);
+    }
+  }
+
+  &--sm {
+    padding: 0.6rem 1.1rem;
+    font-size: 0.8rem;
+  }
+
+  &--block {
+    width: 100%;
+  }
+}
+
+// Forms --------------------------------------------------------------------
+.field {
+  display: grid;
+  gap: 0.4rem;
+  margin-bottom: 1.1rem;
+
+  label {
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-soft);
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s;
+
+    &::placeholder {
+      color: var(--muted);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: var(--gold-400);
+      box-shadow: 0 0 0 3px rgba(240, 178, 74, 0.18);
+    }
+
+    &.ng-invalid.ng-touched {
+      border-color: var(--ember-400);
+    }
+  }
+
+  textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  .error {
+    font-size: 0.82rem;
+    color: var(--ember-400);
+  }
+}
+
+.form-row {
+  display: grid;
+  gap: 0 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.alert {
+  padding: 0.9rem 1.1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-2);
+  margin-bottom: 1.2rem;
+  font-size: 0.95rem;
+
+  &--error {
+    border-color: rgba(232, 82, 63, 0.5);
+    background: rgba(201, 48, 44, 0.12);
+  }
+
+  &--success {
+    border-color: rgba(79, 157, 105, 0.5);
+    background: rgba(79, 157, 105, 0.12);
+  }
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: clamp(1.25rem, 2.5vw, 2rem);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-strong);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-2);
+}
+
+.page-hero {
+  position: relative;
+  padding: calc(var(--header-h) + clamp(3rem, 7vw, 6rem)) 0 clamp(2.5rem, 5vw, 4rem);
+  background:
+    radial-gradient(ellipse 70% 90% at 85% 0%, rgba(201, 48, 44, 0.22), transparent 60%),
+    radial-gradient(ellipse 50% 70% at 5% 100%, rgba(240, 178, 74, 0.1), transparent 60%),
+    var(--surface);
+  border-bottom: 1px solid var(--border);
+
+  h1 {
+    font-size: clamp(2.4rem, 5vw, 4.2rem);
+  }
+}
+
+.prose {
+  max-width: 72ch;
+
+  h2 {
+    font-size: 1.7rem;
+    margin-top: 2.2rem;
+  }
+
+  ul {
+    padding-left: 1.2rem;
+  }
+
+  a {
+    color: var(--gold-400);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+}
+
+// Motion -------------------------------------------------------------------
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.9s var(--ease),
+    transform 0.9s var(--ease);
+
+  &.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(100deg, var(--surface-2) 30%, var(--surface-3) 50%, var(--surface-2) 70%);
+  background-size: 300% 100%;
+  animation: shimmer 1.6s infinite linear;
+  border-radius: var(--radius);
+}
+
+@keyframes shimmer {
+  to {
+    background-position: -150% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1.2rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+
+  a:hover {
+    color: var(--gold-400);
+  }
+
+  [aria-current] {
+    color: var(--text-2);
+  }
+}

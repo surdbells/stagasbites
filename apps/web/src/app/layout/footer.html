@@ -1,0 +1,51 @@
+<footer class="footer">
+  <div class="container footer__cta">
+    <h2>Feeding a crowd this weekend?</h2>
+    <a routerLink="/menu" class="btn btn--gold">Pre-order now</a>
+  </div>
+
+  <div class="container footer__grid">
+    <div class="footer__about">
+      <p class="footer__brand">Staga's <em>Bites</em></p>
+      <p class="text-soft">
+        Authentic Nigerian small chops, pastries and flame-grilled favourites — made fresh to order in
+        {{ site.city }}, Ontario by a certified food handler.
+      </p>
+      <p class="footer__rating" aria-label="Rated 5 out of 5 on Google">
+        <span aria-hidden="true">★★★★★</span> {{ site.rating.value.toFixed(1) }} · {{ site.rating.count }} Google reviews
+      </p>
+    </div>
+
+    <nav aria-label="Menu categories">
+      <h3>Menu</h3>
+      <a routerLink="/menu/small-chops">Small Chops</a>
+      <a routerLink="/menu/grills">Grills</a>
+      <a routerLink="/menu/snacks">Snacks &amp; Pastries</a>
+      <a routerLink="/menu/platters">Platters &amp; Bulk</a>
+      <a routerLink="/catering">Event Catering</a>
+    </nav>
+
+    <nav aria-label="Company">
+      <h3>Company</h3>
+      <a routerLink="/about">Our Story</a>
+      <a routerLink="/contact">Contact</a>
+      <a routerLink="/faq">FAQ</a>
+      <a routerLink="/legal/delivery">Pickup &amp; Delivery</a>
+      <a routerLink="/legal/refunds">Refund Policy</a>
+      <a routerLink="/legal/terms">Terms</a>
+      <a routerLink="/legal/privacy">Privacy</a>
+    </nav>
+
+    <div>
+      <h3>Say hello</h3>
+      <a [href]="site.phoneHref">{{ site.phone }}</a>
+      <a [href]="'mailto:' + site.email">{{ site.email }}</a>
+      <p class="text-soft">{{ site.city }}, {{ site.region }}, Canada<br />Pre-orders for weekend pickup &amp; delivery</p>
+    </div>
+  </div>
+
+  <div class="container footer__bottom">
+    <span>© {{ year }} {{ site.legalName }}. All rights reserved.</span>
+    <span>Made fresh. Never frozen.</span>
+  </div>
+</footer>

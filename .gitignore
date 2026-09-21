@@ -1,0 +1,23 @@
+# Secrets
+.env
+.env.local
+!.env.example
+
+# API
+/apps/api/vendor/
+/apps/api/var/
+/apps/api/public/uploads/*
+!/apps/api/public/uploads/.gitkeep
+/apps/api/.phpunit.cache/
+/apps/api/.php-cs-fixer.cache
+
+# Web
+/apps/web/node_modules/
+/apps/web/dist/
+/apps/web/.angular/
+
+# OS / editors
+.DS_Store
+Thumbs.db
+.idea/
+*.log

@@ -1,0 +1,44 @@
+<div class="scrim" [class.scrim--open]="cart.drawerOpen()" (click)="close()"></div>
+<aside class="drawer" [class.drawer--open]="cart.drawerOpen()" role="dialog" aria-label="Shopping cart"
+       [attr.aria-hidden]="!cart.drawerOpen()" [attr.inert]="cart.drawerOpen() ? null : ''">
+  <header class="drawer__head">
+    <h2>Your order <small>({{ cart.count() }})</small></h2>
+    <button type="button" class="drawer__close" (click)="close()" aria-label="Close cart">✕</button>
+  </header>
+
+  @if (cart.isEmpty()) {
+    <div class="drawer__empty">
+      <p>Your tray is empty.</p>
+      <a routerLink="/menu" class="btn btn--ghost" (click)="close()">Browse the menu</a>
+    </div>
+  } @else {
+    <ul class="drawer__lines">
+      @for (line of cart.lines(); track line.option_id) {
+        <li class="line">
+          <img [src]="line.image_url || '/placeholder.svg'" [alt]="line.name" width="72" height="72" loading="lazy" />
+          <div class="line__body">
+            <a [routerLink]="['/product', line.slug]" (click)="close()">{{ line.name }}</a>
+            <span class="text-soft">{{ line.option_label }}</span>
+            <div class="line__controls">
+              <div class="qty">
+                <button type="button" (click)="cart.setQuantity(line.option_id, line.quantity - 1)"
+                        [disabled]="line.quantity <= line.min_quantity" aria-label="Decrease quantity">−</button>
+                <span>{{ line.quantity }}</span>
+                <button type="button" (click)="cart.setQuantity(line.option_id, line.quantity + 1)" aria-label="Increase quantity">+</button>
+              </div>
+              <button type="button" class="line__remove" (click)="cart.remove(line.option_id)">Remove</button>
+            </div>
+          </div>
+          <strong>{{ line.unit_price * line.quantity | money }}</strong>
+        </li>
+      }
+    </ul>
+
+    <footer class="drawer__foot">
+      <div class="drawer__total"><span>Subtotal</span><strong>{{ cart.subtotal() | money }}</strong></div>
+      <p class="text-soft">Tax and delivery are calculated at checkout.</p>
+      <a routerLink="/checkout" class="btn btn--block" (click)="close()">Checkout</a>
+      <a routerLink="/cart" class="drawer__link" (click)="close()">View full cart</a>
+    </footer>
+  }
+</aside>

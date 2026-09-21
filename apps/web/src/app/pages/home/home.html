@@ -1,0 +1,170 @@
+<section class="hero">
+  <div class="container hero__inner">
+    <div class="hero__copy">
+      <p class="eyebrow">Oakville · Nigerian kitchen · Award winner</p>
+      <h1>Small chops, grills &amp; pastries — <em>made fresh to order.</em></h1>
+      <p class="lead">
+        Hand-folded samosas, pillowy puff puff, smoky asun and suya. Pre-order for the weekend, or let us cater your event.
+      </p>
+
+      <form class="hero__search" role="search" (submit)="$event.preventDefault(); goSearch(q.value)">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.500-3.500"/></svg>
+        <input #q type="search" placeholder="What are you craving? Try “meat pie”" aria-label="Search the menu" />
+        <button type="submit" class="btn btn--sm">Search</button>
+      </form>
+
+      <div class="hero__cta">
+        <a routerLink="/menu" class="btn">Order for the weekend</a>
+        <a routerLink="/catering" class="btn btn--ghost">Cater my event</a>
+      </div>
+    </div>
+
+    <div class="hero__bento">
+      <div class="tile tile--0"><img src="/img/hero/samosas.jpg" alt="A platter of crisp golden samosas with chilli dipping sauce" width="1400" height="1000" fetchpriority="high" /></div>
+      <div class="tile tile--1"><img src="/img/hero/skewers.jpg" alt="Flame-grilled suya-style beef skewers" width="800" height="1000" /></div>
+      <div class="tile tile--2"><img src="/img/hero/spring-rolls.jpg" alt="A stack of golden spring rolls on a serving stand" width="800" height="800" /></div>
+      <div class="hero__badge"><strong><span>★</span> {{ site.rating.value.toFixed(1) }}</strong><small>{{ site.rating.count }} Google reviews</small></div>
+    </div>
+  </div>
+
+  <ul class="container hero__trust">
+    <li><strong>Made to order</strong> — never frozen</li>
+    <li><strong>Canadian Choice</strong> Award winner</li>
+    <li><strong>Certified</strong> food handler</li>
+    <li><strong>Pickup &amp; delivery</strong> across the west GTA</li>
+  </ul>
+</section>
+
+<div class="marquee" aria-hidden="true">
+  <div class="marquee__track">
+    @for (pass of [0, 1]; track pass) {
+      @for (item of marquee; track item) {
+        <span>{{ item }}</span><i>✦</i>
+      }
+    }
+  </div>
+</div>
+
+<section id="categories" class="section container">
+  <header class="section__head" appReveal>
+    <p class="eyebrow">The menu</p>
+    <h2>Pick your <em>craving</em></h2>
+    <p class="lead">Four ways to feed a crowd — from a dozen samosas for movie night to platters for the whole office.</p>
+  </header>
+
+  <div class="cats">
+    @for (cat of categories(); track cat.id; let i = $index) {
+      <a class="cat" [routerLink]="['/menu', cat.slug]" [appReveal]="i * 90">
+        <img [src]="cat.image_url || '/placeholder.svg'" [alt]="cat.name" width="600" height="760" loading="lazy" />
+        <div class="cat__body">
+          <span class="cat__count">{{ cat.product_count }} items</span>
+          <h3>{{ cat.name }}</h3>
+          <p>{{ cat.description }}</p>
+          <span class="cat__link">Explore <span aria-hidden="true">→</span></span>
+        </div>
+      </a>
+    }
+  </div>
+</section>
+
+<section class="section section--tint">
+  <div class="container">
+    <header class="section__head section__head--row" appReveal>
+      <div>
+        <p class="eyebrow">Crowd favourites</p>
+        <h2>What everyone <em>fights over</em></h2>
+      </div>
+      <a routerLink="/menu" class="btn btn--ghost">See the full menu</a>
+    </header>
+
+    <div class="grid">
+      @if (featured(); as items) {
+        @for (product of items; track product.id; let i = $index) {
+          <app-product-card [product]="product" [appReveal]="(i % 4) * 80" />
+        } @empty {
+          <p class="text-soft">Our menu is being updated — check back shortly.</p>
+        }
+      } @else {
+        @for (s of [0, 1, 2, 3]; track s) {
+          <div class="skeleton" style="aspect-ratio: 3 / 4"></div>
+        }
+      }
+    </div>
+  </div>
+</section>
+
+<section class="section container">
+  <header class="section__head" appReveal>
+    <p class="eyebrow">How it works</p>
+    <h2>Fresh takes <em>a little planning</em></h2>
+  </header>
+  <ol class="steps">
+    @for (step of steps; track step.n; let i = $index) {
+      <li class="step" [appReveal]="i * 120">
+        <span class="step__n">{{ step.n }}</span>
+        <h3>{{ step.title }}</h3>
+        <p>{{ step.text }}</p>
+      </li>
+    }
+  </ol>
+</section>
+
+<section class="cater">
+  <div class="container cater__inner">
+    <div appReveal>
+      <p class="eyebrow">Events &amp; bulk orders</p>
+      <h2>Hosting fifty? <em>We’ve got the grill.</em></h2>
+      <p class="lead">
+        Birthdays, weddings, naming ceremonies, office lunches. Tell us your guest count and we’ll build a spread
+        that looks as good as it tastes — finger foods, grills, platters and display service.
+      </p>
+      <div class="hero__cta">
+        <a routerLink="/catering" class="btn btn--gold">Request a catering quote</a>
+        <a [href]="site.phoneHref" class="btn btn--ghost">Call {{ site.phone }}</a>
+      </div>
+    </div>
+    <ul class="cater__stats" appReveal="150">
+      <li><strong>10+</strong><span>guests, any occasion</span></li>
+      <li><strong>48 h</strong><span>typical lead time</span></li>
+      <li><strong>100%</strong><span>made to order</span></li>
+    </ul>
+  </div>
+</section>
+
+<section class="section container">
+  <header class="section__head" appReveal>
+    <p class="eyebrow">
+      <span aria-hidden="true">★★★★★</span> {{ site.rating.value.toFixed(1) }} on Google · {{ site.rating.count }} reviews
+    </p>
+    <h2>What people <em>keep saying</em></h2>
+  </header>
+  <div class="praise">
+    @for (item of praise; track item.title; let i = $index) {
+      <article class="praise__card" [appReveal]="i * 100">
+        <h3>{{ item.title }}</h3>
+        <p>{{ item.text }}</p>
+      </article>
+    }
+  </div>
+</section>
+
+<section class="section section--tint">
+  <div class="container story" appReveal>
+    <div>
+      <p class="eyebrow">Nigerian food in Oakville &amp; the GTA</p>
+      <h2>A taste of Lagos, <em>made in Oakville</em></h2>
+    </div>
+    <div class="prose">
+      <p>
+        Staga’s Bites is a Nigerian kitchen in Oakville, Ontario specialising in <a routerLink="/menu/small-chops">small chops</a>,
+        hand-made <a routerLink="/menu/snacks">pastries</a> and flame-grilled <a routerLink="/menu/grills">suya, asun and chicken</a>.
+        Everything is prepared by a certified food handler and cooked fresh for your pickup or delivery slot.
+      </p>
+      <p>
+        We serve Oakville, Mississauga, Burlington, Milton and the wider Greater Toronto Area — whether you need a dozen
+        meat pies for the weekend or <a routerLink="/catering">full event catering</a> for a few hundred guests.
+      </p>
+      <a routerLink="/about" class="btn btn--ghost btn--sm">Read our story</a>
+    </div>
+  </div>
+</section>

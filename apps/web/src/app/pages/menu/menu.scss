@@ -1,0 +1,134 @@
+.menu {
+  padding-block: 2.5rem clamp(4rem, 8vw, 7rem);
+}
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 2rem;
+
+  &__controls {
+    display: flex;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+  }
+}
+
+.chips {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.chip-link {
+  flex: none;
+  padding: 0.6rem 1.15rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-strong);
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  color: var(--text-2);
+  transition:
+    background 0.25s,
+    color 0.25s,
+    border-color 0.25s;
+
+  small {
+    margin-left: 0.3rem;
+    opacity: 0.6;
+  }
+
+  &:hover {
+    border-color: var(--gold-400);
+  }
+
+  &.is-active {
+    background: var(--text);
+    border-color: var(--text);
+    color: var(--bg);
+  }
+}
+
+.search,
+.sort {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 1rem;
+  height: 44px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  color: var(--text-soft);
+
+  &:focus-within {
+    border-color: var(--gold-400);
+  }
+
+  input,
+  select {
+    background: none;
+    border: 0;
+    outline: none;
+    color: var(--text);
+    min-width: 0;
+  }
+
+  input {
+    width: 190px;
+  }
+
+  option {
+    background: var(--surface-2);
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.4rem;
+}
+
+.empty {
+  text-align: center;
+  padding: 4rem 1rem;
+}
+
+.more {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+@media (max-width: 1100px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 800px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.8rem;
+  }
+
+  .toolbar__controls {
+    width: 100%;
+  }
+
+  .search {
+    flex: 1;
+
+    input {
+      width: 100%;
+    }
+  }
+}

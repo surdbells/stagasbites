@@ -1,0 +1,74 @@
+<section class="page-hero">
+  <div class="container">
+    <nav class="crumbs" aria-label="Breadcrumb">
+      <a routerLink="/">Home</a><span>/</span>
+      @if (activeCategory(); as cat) {
+        <a routerLink="/menu">Menu</a><span>/</span><span aria-current="page">{{ cat.name }}</span>
+      } @else {
+        <span aria-current="page">Menu</span>
+      }
+    </nav>
+    <h1>{{ activeCategory()?.name ?? 'The Menu' }}</h1>
+    <p class="lead">
+      {{ activeCategory()?.description ?? 'Everything is made to order. Pre-order by Wednesday for the weekend — pickup in Oakville or delivery across the west GTA.' }}
+    </p>
+  </div>
+</section>
+
+<section class="container menu">
+  <div class="toolbar">
+    <nav class="chips" aria-label="Menu categories">
+      <a routerLink="/menu" class="chip-link" [class.is-active]="!category()">All</a>
+      @for (cat of categories(); track cat.id) {
+        <a [routerLink]="['/menu', cat.slug]" class="chip-link" [class.is-active]="cat.slug === category()">
+          {{ cat.name }} <small>{{ cat.product_count }}</small>
+        </a>
+      }
+    </nav>
+
+    <div class="toolbar__controls">
+      <label class="search">
+        <span class="sr-only">Search the menu</span>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="search" placeholder="Search — try “suya”" [ngModel]="search()" (ngModelChange)="onSearch($event)" />
+      </label>
+      <label class="sort">
+        <span class="sr-only">Sort by</span>
+        <select [ngModel]="sort()" (ngModelChange)="sort.set($event)">
+          <option value="featured">Featured</option>
+          <option value="price_asc">Price: low to high</option>
+          <option value="price_desc">Price: high to low</option>
+          <option value="name">Name A–Z</option>
+          <option value="newest">Newest</option>
+        </select>
+      </label>
+    </div>
+  </div>
+
+  @if (failed()) {
+    <div class="alert alert--error">We couldn’t load the menu. Please refresh, or call us to order.</div>
+  }
+
+  <div class="grid" [attr.aria-busy]="loading()">
+    @for (product of products(); track product.id; let i = $index) {
+      <app-product-card [product]="product" [eager]="i < 4" />
+    }
+    @if (loading()) {
+      @for (s of [0, 1, 2, 3]; track s) {
+        <div class="skeleton" style="aspect-ratio: 3 / 4"></div>
+      }
+    }
+  </div>
+
+  @if (!loading() && !failed() && products().length === 0) {
+    <div class="empty">
+      <h2>Nothing matches that — yet.</h2>
+      <p class="text-soft">Try a different search, or tell us what you’re after and we’ll make it.</p>
+      <a routerLink="/contact" class="btn btn--ghost">Request a custom order</a>
+    </div>
+  }
+
+  @if (hasMore() && !loading()) {
+    <div class="more"><button type="button" class="btn btn--ghost" (click)="loadMore()">Show more</button></div>
+  }
+</section>

@@ -1,0 +1,165 @@
+<section class="page-hero">
+  <div class="container">
+    <h1>Checkout</h1>
+    <p class="lead">Pick your slot, then pay securely with Stripe. We start cooking once payment is confirmed.</p>
+  </div>
+</section>
+
+<section class="container checkout">
+  @if (cart.isEmpty()) {
+    <div class="checkout__empty">
+      <h2>Nothing to check out yet</h2>
+      <a routerLink="/menu" class="btn">Browse the menu</a>
+    </div>
+  } @else {
+    <form class="checkout__form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
+      @if (cancelled && !error()) {
+        <div class="alert">Payment was cancelled — your order is still here whenever you’re ready.</div>
+      }
+      @if (error(); as message) {
+        <div class="alert alert--error" role="alert">{{ message }}</div>
+      }
+
+      <fieldset class="card block">
+        <legend><span>1</span> Your details</legend>
+        <div class="form-row">
+          <div class="field">
+            <label for="first_name">First name</label>
+            <input id="first_name" formControlName="first_name" autocomplete="given-name" />
+          </div>
+          <div class="field">
+            <label for="last_name">Last name</label>
+            <input id="last_name" formControlName="last_name" autocomplete="family-name" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="email">Email</label>
+            <input id="email" type="email" formControlName="email" autocomplete="email" />
+            @if (errorFor('customer.email'); as e) { <span class="error">{{ e }}</span> }
+          </div>
+          <div class="field">
+            <label for="phone">Mobile number</label>
+            <input id="phone" type="tel" formControlName="phone" autocomplete="tel" placeholder="We’ll text when it’s ready" />
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset class="card block">
+        <legend><span>2</span> Pickup or delivery</legend>
+
+        <div class="toggle" role="radiogroup" aria-label="Fulfilment method">
+          <button type="button" role="radio" [attr.aria-checked]="method() === 'pickup'" [class.is-active]="method() === 'pickup'" (click)="setMethod('pickup')">
+            <strong>Pickup</strong><small>Oakville · free</small>
+          </button>
+          <button type="button" role="radio" [attr.aria-checked]="method() === 'delivery'" [class.is-active]="method() === 'delivery'" (click)="setMethod('delivery')">
+            <strong>Delivery</strong>
+            <small>{{ settings()?.delivery_areas?.join(', ') }}</small>
+          </button>
+        </div>
+
+        <p class="block__label">Choose a day</p>
+        <div class="dates" role="radiogroup" aria-label="Date">
+          @for (d of dates(); track d.value) {
+            <button type="button" class="date" role="radio" [attr.aria-checked]="form.controls.date.value === d.value"
+                    [class.is-active]="form.controls.date.value === d.value" (click)="form.controls.date.setValue(d.value)">
+              <small>{{ d.weekday }}</small><strong>{{ d.day }}</strong><small>{{ d.month }}</small>
+            </button>
+          } @empty {
+            <p class="text-soft">Loading available days…</p>
+          }
+        </div>
+        @if (errorFor('fulfilment.date'); as e) { <span class="error">{{ e }}</span> }
+        @if (form.controls.date.touched && form.controls.date.invalid) { <span class="error">Please choose a day.</span> }
+
+        <p class="block__label">Choose a time</p>
+        <div class="slots" role="radiogroup" aria-label="Time slot">
+          @for (slot of settings()?.time_slots ?? []; track slot) {
+            <button type="button" class="slot" role="radio" [attr.aria-checked]="form.controls.time_slot.value === slot"
+                    [class.is-active]="form.controls.time_slot.value === slot" (click)="form.controls.time_slot.setValue(slot)">
+              {{ slot }}
+            </button>
+          }
+        </div>
+        @if (form.controls.time_slot.touched && form.controls.time_slot.invalid) { <span class="error">Please choose a time.</span> }
+
+        @if (method() === 'delivery') {
+          <div class="address">
+            <div class="field">
+              <label for="address_line1">Street address</label>
+              <input id="address_line1" formControlName="address_line1" autocomplete="address-line1" />
+              @if (errorFor('fulfilment.address_line1'); as e) { <span class="error">{{ e }}</span> }
+            </div>
+            <div class="field">
+              <label for="address_line2">Unit / buzzer (optional)</label>
+              <input id="address_line2" formControlName="address_line2" autocomplete="address-line2" />
+            </div>
+            <div class="form-row">
+              <div class="field">
+                <label for="city">City</label>
+                <input id="city" formControlName="city" autocomplete="address-level2" />
+                @if (errorFor('fulfilment.city'); as e) { <span class="error">{{ e }}</span> }
+              </div>
+              <div class="field">
+                <label for="postal_code">Postal code</label>
+                <input id="postal_code" formControlName="postal_code" autocomplete="postal-code" />
+              </div>
+            </div>
+          </div>
+        } @else {
+          <p class="text-soft pickup-note">{{ settings()?.pickup_address }}</p>
+        }
+      </fieldset>
+
+      <fieldset class="card block">
+        <legend><span>3</span> Anything we should know?</legend>
+        <div class="field">
+          <label for="notes">Allergies, spice preferences, occasion…</label>
+          <textarea id="notes" formControlName="notes" rows="3"></textarea>
+        </div>
+      </fieldset>
+    </form>
+
+    <aside class="card summary">
+      <h2>Order summary</h2>
+      <ul class="summary__lines">
+        @for (line of cart.lines(); track line.option_id) {
+          <li>
+            <span>{{ line.quantity }} × {{ line.name }} <small>{{ line.option_label }}</small></span>
+            <span>{{ line.unit_price * line.quantity | money }}</span>
+          </li>
+        }
+      </ul>
+
+      <form class="coupon" [formGroup]="form" (ngSubmit)="applyCoupon()">
+        <input formControlName="coupon" placeholder="Promo code" aria-label="Promo code" />
+        <button type="submit" class="btn btn--ghost btn--sm">Apply</button>
+      </form>
+      @if (quote()?.coupon_message; as m) { <p class="error">{{ m }}</p> }
+
+      @if (quote(); as q) {
+        <dl class="totals">
+          <div><dt>Subtotal</dt><dd>{{ q.subtotal | money: q.currency }}</dd></div>
+          @if (q.discount > 0) {
+            <div class="totals__discount"><dt>Discount</dt><dd>−{{ q.discount | money: q.currency }}</dd></div>
+          }
+          @if (method() === 'delivery') {
+            <div><dt>Delivery</dt><dd>{{ q.delivery_fee === 0 ? 'Free' : (q.delivery_fee | money: q.currency) }}</dd></div>
+          }
+          <div><dt>{{ q.tax_label }}</dt><dd>{{ q.tax | money: q.currency }}</dd></div>
+          <div class="totals__total"><dt>Total</dt><dd>{{ q.total | money: q.currency }}</dd></div>
+        </dl>
+      } @else {
+        <div class="skeleton" style="height: 8rem; margin: 1rem 0"></div>
+      }
+
+      <button type="button" class="btn btn--block" (click)="submit()" [disabled]="submitting() || !quote()">
+        {{ submitting() ? 'Redirecting to Stripe…' : 'Pay securely' }}
+      </button>
+      <p class="summary__secure">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        Payments are processed by Stripe. We never see your card details.
+      </p>
+    </aside>
+  }
+</section>

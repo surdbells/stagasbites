@@ -1,0 +1,136 @@
+.order {
+  padding-block: 3rem clamp(4rem, 8vw, 7rem);
+
+  &__grid {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 1.5rem;
+    align-items: start;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  &__when {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    line-height: 1.35;
+    color: var(--gold-400);
+  }
+
+  &__items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.7rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    small {
+      display: block;
+      color: var(--text-soft);
+    }
+  }
+
+  &__totals {
+    margin: 1rem 0 0;
+
+    div {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.25rem 0;
+      color: var(--text-2);
+    }
+
+    dd {
+      margin: 0;
+    }
+
+    .is-total {
+      margin-top: 0.5rem;
+      padding-top: 0.8rem;
+      border-top: 1px solid var(--border-strong);
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: var(--heading);
+    }
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: 2rem;
+  }
+}
+
+.timeline {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  margin: 0 0 2.5rem;
+  padding: 0;
+
+  li {
+    position: relative;
+    padding-top: 1.6rem;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 6px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--border-strong);
+    }
+
+    span {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--surface-3);
+      border: 2px solid var(--border-strong);
+    }
+
+    &.is-done {
+      color: var(--heading);
+
+      &::before {
+        background: var(--gold-400);
+      }
+
+      span {
+        background: var(--gold-400);
+        border-color: var(--gold-400);
+      }
+    }
+
+    &[aria-current] span {
+      box-shadow: 0 0 0 6px rgba(240, 178, 74, 0.2);
+    }
+  }
+}
+
+@media (max-width: 800px) {
+  .order__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .timeline li {
+    font-size: 0.68rem;
+  }
+}

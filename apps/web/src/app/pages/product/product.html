@@ -1,0 +1,116 @@
+@switch (state()) {
+  @case ('loading') {
+    <section class="container pdp pdp--loading">
+      <div class="skeleton" style="aspect-ratio: 1"></div>
+      <div>
+        <div class="skeleton" style="height: 3rem; width: 70%; margin-bottom: 1rem"></div>
+        <div class="skeleton" style="height: 6rem; margin-bottom: 1rem"></div>
+        <div class="skeleton" style="height: 10rem"></div>
+      </div>
+    </section>
+  }
+  @case ('missing') {
+    <section class="page-hero">
+      <div class="container">
+        <h1>That one’s off the menu</h1>
+        <p class="lead">The item you’re looking for isn’t available right now.</p>
+        <a routerLink="/menu" class="btn">Back to the menu</a>
+      </div>
+    </section>
+  }
+  @case ('ready') {
+    @if (product(); as p) {
+      <section class="container pdp">
+        <div class="gallery">
+          <div class="gallery__main">
+            <img [src]="activeImage() || '/placeholder.svg'" [alt]="p.name" width="900" height="900" fetchpriority="high" />
+          </div>
+          @if (images().length > 1) {
+            <div class="gallery__thumbs">
+              @for (src of images(); track src) {
+                <button type="button" [class.is-active]="src === activeImage()" (click)="activeImage.set(src)" [attr.aria-label]="'View image of ' + p.name">
+                  <img [src]="src" alt="" width="120" height="120" loading="lazy" />
+                </button>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="info">
+          <nav class="crumbs" aria-label="Breadcrumb">
+            <a routerLink="/menu">Menu</a><span>/</span>
+            @if (p.category; as cat) {
+              <a [routerLink]="['/menu', cat.slug]">{{ cat.name }}</a><span>/</span>
+            }
+            <span aria-current="page">{{ p.name }}</span>
+          </nav>
+
+          <h1>{{ p.name }}</h1>
+
+          <div class="info__tags">
+            @for (tag of p.tags; track tag) {
+              <span class="chip">{{ tag }}</span>
+            }
+            @if (p.spice_level > 0) {
+              <span class="chip chip--spice" [attr.aria-label]="'Spice level ' + p.spice_level + ' of 3'">
+                @for (i of spice(); track i) {
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" aria-hidden="true"><path d="M12 2c1 5-5 7-5 13a5 5 0 0 0 10 0c0-2-1-3-1-5 3 2 5 5 5 8a9 9 0 0 1-18 0C3 10 10 9 12 2Z"/></svg>
+                }
+                {{ ['', 'Mild heat', 'Medium heat', 'Hot'][p.spice_level] }}
+              </span>
+            }
+          </div>
+
+          <p class="info__desc">{{ p.description || p.short_description }}</p>
+
+          <fieldset class="options">
+            <legend>Choose a size</legend>
+            @for (o of p.options; track o.id) {
+              <label class="option" [class.is-selected]="o.id === option()?.id">
+                <input type="radio" name="option" [checked]="o.id === option()?.id" (change)="selectOption(o)" />
+                <span class="option__label">
+                  <strong>{{ o.label }}</strong>
+                  @if (o.serves) {
+                    <small>{{ o.serves }}</small>
+                  }
+                </span>
+                <span class="option__price">{{ o.price | money }}</span>
+              </label>
+            }
+          </fieldset>
+
+          <div class="buy">
+            <div class="qty" role="group" aria-label="Quantity">
+              <button type="button" (click)="step(-1)" [disabled]="quantity() <= p.min_quantity" aria-label="Decrease quantity">−</button>
+              <output aria-live="polite">{{ quantity() }}</output>
+              <button type="button" (click)="step(1)" aria-label="Increase quantity">+</button>
+            </div>
+            <button type="button" class="btn buy__btn" (click)="addToCart()" [disabled]="!option()">
+              {{ added() ? 'Added ✓' : 'Add to order' }} · {{ lineTotal() | money }}
+            </button>
+          </div>
+          @if (p.min_quantity > 1) {
+            <p class="text-soft buy__note">Minimum order: {{ p.min_quantity }}</p>
+          }
+
+          <ul class="facts">
+            <li><strong>Made to order</strong><span>Cooked fresh for your slot — never frozen.</span></li>
+            <li><strong>{{ p.lead_time_hours }} hours’ notice</strong><span>Order ahead for weekend pickup or delivery.</span></li>
+            <li><strong>Allergens</strong><span>Prepared in a kitchen that handles wheat, eggs, dairy, peanuts, fish and shellfish.</span></li>
+          </ul>
+        </div>
+      </section>
+
+      @if (related().length) {
+        <section class="container related">
+          <h2>Goes well <em>with</em></h2>
+          <div class="related__grid">
+            @for (r of related(); track r.id) {
+              <app-product-card [product]="r" />
+            }
+          </div>
+        </section>
+      }
+    }
+  }
+}
