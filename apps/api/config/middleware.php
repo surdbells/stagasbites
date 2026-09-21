@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
 use Slim\App;
@@ -24,7 +25,7 @@ return function (App $app): void {
 
     $errorMiddleware = $app->addErrorMiddleware($debug, true, true, $logger);
     $errorMiddleware->setDefaultErrorHandler(
-        static function (ServerRequestInterface $request, Throwable $e) use ($debug, $logger): Response {
+        static function (ServerRequestInterface $request, Throwable $e) use ($debug, $logger): ResponseInterface {
             $response = new Response();
             if ($e instanceof ApiException) {
                 return JsonResponse::error($response, $e->getMessage(), $e->getStatusCode(), $e->getErrors());

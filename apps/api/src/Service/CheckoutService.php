@@ -238,8 +238,8 @@ final class CheckoutService
         } elseif ($date > new \DateTimeImmutable('+90 days')) {
             $error = 'Please choose a date within the next 90 days.';
         }
-        if ($error !== null || $date === false) {
-            throw ApiException::validation('Please check the highlighted fields.', ['fulfilment.date' => [$error ?? 'Invalid date.']]);
+        if ($date === false || $error !== null) {
+            throw ApiException::validation('Please check the highlighted fields.', ['fulfilment.date' => [(string) $error]]);
         }
 
         return $date;

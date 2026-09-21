@@ -47,7 +47,7 @@ final class AdminOrderController
         $page = max(1, (int) ($q['page'] ?? 1));
         $perPage = max(1, min(100, (int) ($q['per_page'] ?? 25)));
         $result = $this->orders->search([
-            'status' => OrderStatus::tryFrom((string) ($q['status'] ?? ''))?->value ?? '',
+            'status' => (string) (OrderStatus::tryFrom((string) ($q['status'] ?? ''))?->value),
             'search' => (string) ($q['search'] ?? ''),
             'date' => preg_match('/^\d{4}-\d{2}-\d{2}$/', (string) ($q['date'] ?? '')) === 1 ? (string) $q['date'] : '',
         ], $page, $perPage);

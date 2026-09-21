@@ -26,6 +26,7 @@ final class SeoController
         '/' => ["Staga's Bites | Nigerian Small Chops, Pastries & Grills in Oakville", 'Authentic Nigerian small chops, meat pies, puff puff, suya and flame-grilled favourites in Oakville, ON. Pre-order for weekend pickup or delivery, or book us to cater your event.'],
         '/menu' => ['Menu — Small Chops, Grills & Pastries', 'Browse the full Staga\'s Bites menu: samosas, spring rolls, puff puff, meat pies, asun, suya, grilled tilapia and party platters. Order online for pickup or delivery in the GTA.'],
         '/catering' => ['Nigerian Event Catering & Bulk Orders in Oakville & the GTA', 'Small chops, grills and pastries for weddings, birthdays, corporate events and house parties. Custom platters for any guest count. Request a catering quote today.'],
+        '/gallery' => ['Gallery — Small Chops, Grills & Party Platters', "Photos of Staga's Bites small chops, pastries, grills and event platters, made fresh in Oakville, Ontario."],
         '/about' => ['Our Story', "Meet Staga's Bites — an award-winning, certified Nigerian kitchen in Oakville, Ontario, serving small chops, pastries and grills made fresh to order."],
         '/contact' => ['Contact Us', "Questions, custom orders or catering? Call +1 (647) 673-8796 or message Staga's Bites in Oakville, Ontario. We reply within one business day."],
         '/faq' => ['Frequently Asked Questions', 'How pre-orders, pickup, delivery, lead times, allergens and catering work at Staga\'s Bites.'],
@@ -35,7 +36,7 @@ final class SeoController
         '/legal/privacy' => ['Privacy Policy', 'How Staga\'s Bites collects, uses and protects your personal information.'],
     ];
 
-    private const NOINDEX_PREFIXES = ['/cart', '/checkout', '/order', '/account', '/admin'];
+    private const NOINDEX_PREFIXES = ['/cart', '/checkout', '/order', '/account', '/admin', '/wishlist'];
 
     public function __construct(
         private readonly ProductRepository $products,
