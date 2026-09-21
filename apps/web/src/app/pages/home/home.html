@@ -2,16 +2,12 @@
   <div class="container hero__inner">
     <div class="hero__copy">
       <p class="eyebrow">Oakville · Nigerian kitchen · Award winner</p>
-      <h1>Small chops, grills &amp; pastries — <em>made fresh to order.</em></h1>
+      <h1>Small chops, grills &amp; pastries, <em>made fresh to order.</em></h1>
       <p class="lead">
         Hand-folded samosas, pillowy puff puff, smoky asun and suya. Pre-order for the weekend, or let us cater your event.
       </p>
 
-      <form class="hero__search" role="search" (submit)="$event.preventDefault(); goSearch(q.value)">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.500-3.500"/></svg>
-        <input #q type="search" placeholder="What are you craving? Try “meat pie”" aria-label="Search the menu" />
-        <button type="submit" class="btn btn--sm">Search</button>
-      </form>
+      <app-live-search class="hero__search" />
 
       <div class="hero__cta">
         <a routerLink="/menu" class="btn">Order for the weekend</a>
@@ -28,7 +24,7 @@
   </div>
 
   <ul class="container hero__trust">
-    <li><strong>Made to order</strong> — never frozen</li>
+    <li><strong>Made to order</strong>, never frozen</li>
     <li><strong>Canadian Choice</strong> Award winner</li>
     <li><strong>Certified</strong> food handler</li>
     <li><strong>Pickup &amp; delivery</strong> across the west GTA</li>
@@ -49,7 +45,7 @@
   <header class="section__head" appReveal>
     <p class="eyebrow">The menu</p>
     <h2>Pick your <em>craving</em></h2>
-    <p class="lead">Four ways to feed a crowd — from a dozen samosas for movie night to platters for the whole office.</p>
+    <p class="lead">From a dozen samosas for movie night to jollof by the tray and platters for the whole office.</p>
   </header>
 
   <div class="cats">
@@ -82,7 +78,7 @@
         @for (product of items; track product.id; let i = $index) {
           <app-product-card [product]="product" [appReveal]="(i % 4) * 80" />
         } @empty {
-          <p class="text-soft">Our menu is being updated — check back shortly.</p>
+          <p class="text-soft">Our menu is being updated. Check back shortly.</p>
         }
       } @else {
         @for (s of [0, 1, 2, 3]; track s) {
@@ -116,7 +112,7 @@
       <h2>Hosting fifty? <em>We’ve got the grill.</em></h2>
       <p class="lead">
         Birthdays, weddings, naming ceremonies, office lunches. Tell us your guest count and we’ll build a spread
-        that looks as good as it tastes — finger foods, grills, platters and display service.
+        that looks as good as it tastes: finger foods, grills, platters and display service.
       </p>
       <div class="hero__cta">
         <a routerLink="/catering" class="btn btn--gold">Request a catering quote</a>
@@ -131,22 +127,7 @@
   </div>
 </section>
 
-<section class="section container">
-  <header class="section__head" appReveal>
-    <p class="eyebrow">
-      <span aria-hidden="true">★★★★★</span> {{ site.rating.value.toFixed(1) }} on Google · {{ site.rating.count }} reviews
-    </p>
-    <h2>What people <em>keep saying</em></h2>
-  </header>
-  <div class="praise">
-    @for (item of praise; track item.title; let i = $index) {
-      <article class="praise__card" [appReveal]="i * 100">
-        <h3>{{ item.title }}</h3>
-        <p>{{ item.text }}</p>
-      </article>
-    }
-  </div>
-</section>
+<app-google-reviews />
 
 <section class="section section--tint">
   <div class="container story" appReveal>
@@ -161,7 +142,7 @@
         Everything is prepared by a certified food handler and cooked fresh for your pickup or delivery slot.
       </p>
       <p>
-        We serve Oakville, Mississauga, Burlington, Milton and the wider Greater Toronto Area — whether you need a dozen
+        We serve Oakville, Mississauga, Burlington, Milton and the wider Greater Toronto Area, whether you need a dozen
         meat pies for the weekend or <a routerLink="/catering">full event catering</a> for a few hundred guests.
       </p>
       <a routerLink="/about" class="btn btn--ghost btn--sm">Read our story</a>

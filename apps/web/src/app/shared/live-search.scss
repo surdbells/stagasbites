@@ -1,0 +1,128 @@
+:host {
+  display: block;
+  max-width: 560px;
+}
+
+.ls {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.4rem 0.4rem 0.4rem 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow);
+  color: var(--text-soft);
+
+  &:focus-within {
+    border-color: var(--ember-500);
+  }
+
+  input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    outline: none;
+    background: none;
+    color: var(--text);
+
+    &::-webkit-search-cancel-button {
+      display: none;
+    }
+  }
+
+  .btn {
+    box-shadow: none;
+    padding-block: 0.75rem;
+  }
+}
+
+.ls__spin {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid var(--border-strong);
+  border-top-color: var(--ember-500);
+  animation: spin 0.7s linear infinite;
+}
+
+.ls__panel {
+  position: absolute;
+  inset: calc(100% + 0.5rem) 0 auto;
+  z-index: 40;
+  padding: 0.4rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  animation: drop 0.25s var(--ease);
+}
+
+.ls__item {
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.5rem;
+  border-radius: var(--radius-sm);
+  color: var(--text);
+
+  img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+
+  &.is-active {
+    background: var(--surface-2);
+  }
+}
+
+.ls__name {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  small {
+    display: block;
+    font-weight: 400;
+    color: var(--muted);
+  }
+}
+
+.ls__price {
+  font-size: 0.85rem;
+  color: var(--text-soft);
+  white-space: nowrap;
+}
+
+.ls__empty {
+  margin: 0;
+  padding: 0.9rem;
+  font-size: 0.92rem;
+}
+
+.ls__all {
+  width: 100%;
+  margin-top: 0.3rem;
+  padding: 0.7rem;
+  border-top: 1px solid var(--border);
+  font-weight: 600;
+  color: var(--ember-500);
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes drop {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}

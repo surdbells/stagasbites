@@ -18,6 +18,7 @@ export class Footer {
   private readonly api = inject(ApiService);
   protected readonly site = SITE;
   protected readonly year = new Date().getFullYear();
+  protected readonly categories = toSignal(inject(CatalogService).categories().pipe(catchError(() => of([]))), { initialValue: [] });
   protected readonly settings = toSignal(inject(CatalogService).settings().pipe(catchError(() => of(null))), { initialValue: null });
 
   protected email = '';
@@ -34,7 +35,7 @@ export class Footer {
       next: () => {
         this.sending.set(false);
         this.email = '';
-        this.newsletter.set({ ok: true, text: "You're on the list — thank you!" });
+        this.newsletter.set({ ok: true, text: "You're on the list. Thank you!" });
       },
       error: () => {
         this.sending.set(false);

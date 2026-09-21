@@ -46,6 +46,10 @@ return [
         'secret_key' => (string) $env('STRIPE_SECRET_KEY', ''),
         'webhook_secret' => (string) $env('STRIPE_WEBHOOK_SECRET', ''),
     ],
+    'google' => [
+        'api_key' => (string) $env('GOOGLE_PLACES_API_KEY', ''),
+        'place_id' => (string) $env('GOOGLE_PLACE_ID', 'ChIJ218RGCxlK4gRtgqbVBx8Nks'),
+    ],
     'storage' => [
         'upload_dir' => dirname(__DIR__) . '/public/uploads',
         'upload_url' => '/uploads',

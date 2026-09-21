@@ -4,14 +4,14 @@ import { SeoService } from '../../core/seo.service';
 
 const FAQS = [
   { q: 'How far ahead do I need to order?', a: 'Most items need about 48 hours’ notice. Checkout only shows the days we can actually fulfil, based on what’s in your cart. For large events, a week or more is ideal.' },
-  { q: 'Which days can I pick up or get delivery?', a: 'We cook for weekend slots — Friday, Saturday and Sunday. Need a weekday? Send us a message and we’ll do our best.' },
+  { q: 'Which days can I pick up or get delivery?', a: 'We cook for weekend slots: Friday, Saturday and Sunday. Need a weekday? Send us a message and we’ll do our best.' },
   { q: 'Where do you deliver?', a: 'Oakville, Burlington, Mississauga and Milton. Delivery is free over $250; otherwise a flat fee applies at checkout. For other parts of the GTA, contact us for a quote.' },
   { q: 'Where is pickup?', a: 'Pickup is in Oakville, Ontario. The exact address is sent with your order confirmation.' },
   { q: 'How spicy is the food?', a: 'Each item shows a heat level. Asun and peppered snails are properly hot; pastries and puff puff have no heat at all. Tell us in the order notes if you’d like something milder.' },
   { q: 'Do you cater for allergies?', a: 'Our kitchen handles wheat, eggs, dairy, peanuts, fish and shellfish, so we can’t guarantee any item is allergen-free. Please tell us about allergies in your order notes and we’ll advise.' },
-  { q: 'Can I change or cancel my order?', a: 'Yes — up to 48 hours before your slot for a full refund. After that we’ve already bought ingredients, so we can’t refund, but we’ll always try to reschedule.' },
+  { q: 'Can I change or cancel my order?', a: 'Yes, up to 48 hours before your slot for a full refund. After that we’ve already bought ingredients, so we can’t refund, but we’ll always try to reschedule.' },
   { q: 'How do I pay?', a: 'Securely by card through Stripe at checkout. For large catering orders we can arrange a deposit by invoice.' },
-  { q: 'Do you cater events?', a: 'Absolutely — from 10 guests upwards. Request a quote on our catering page and we’ll reply within one business day.' },
+  { q: 'Do you cater events?', a: 'Absolutely, from 10 guests upwards. Request a quote on our catering page and we’ll reply within one business day.' },
 ];
 
 @Component({

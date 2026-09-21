@@ -14,7 +14,7 @@
   } @else {
     <form class="checkout__form" [formGroup]="form" (ngSubmit)="submit()" novalidate>
       @if (cancelled && !error()) {
-        <div class="alert">Payment was cancelled — your order is still here whenever you’re ready.</div>
+        <div class="alert">Payment was cancelled. Your order is still here whenever you’re ready.</div>
       }
       @if (error(); as message) {
         <div class="alert alert--error" role="alert">{{ message }}</div>

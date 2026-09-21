@@ -1,2 +1,5 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# Keep LF everywhere so tooling and patches behave the same on Windows, macOS and Linux.
+* text=auto eol=lf
+*.jpg binary
+*.png binary
+*.ico binary

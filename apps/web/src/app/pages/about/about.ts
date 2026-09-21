@@ -24,7 +24,7 @@ import { RevealDirective } from '../../shared/reveal.directive';
       <div class="prose" appReveal>
         <h2>Who we are</h2>
         <p>
-          We’re a Nigerian kitchen based in Oakville, Ontario. We make the food we grew up with — samosas and spring
+          We’re a Nigerian kitchen based in Oakville, Ontario. We make the food we grew up with: samosas and spring
           rolls folded by hand, puff puff fried in small batches, meat pies with proper buttery shortcrust, and asun and
           suya with real smoke and real heat.
         </p>
@@ -113,14 +113,14 @@ export class About {
   protected readonly values = [
     { title: 'Made to order', text: 'Cooked the day you collect. Never frozen, never reheated.' },
     { title: 'Certified & careful', text: 'Every order is prepared by a certified food handler.' },
-    { title: 'Authentic, not watered down', text: 'Real scotch bonnet, real yaji, real flavour — with mild options when you need them.' },
+    { title: 'Authentic, not watered down', text: 'Real scotch bonnet, real yaji, real flavour, with mild options when you need them.' },
     { title: 'On time', text: 'Your event runs on a schedule. So do we.' },
   ];
 
   constructor() {
     inject(SeoService).set({
       title: 'Our Story',
-      description: "Meet Staga's Bites — an award-winning, certified Nigerian kitchen in Oakville, Ontario, serving small chops, pastries and grills made fresh to order.",
+      description: "Meet Staga's Bites, an award-winning, certified Nigerian kitchen in Oakville, Ontario, serving small chops, pastries and grills made fresh to order.",
       path: '/about',
     });
   }

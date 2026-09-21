@@ -37,35 +37,11 @@ h2 em {
 }
 
 .hero__search {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  max-width: 560px;
+  // The entrance animation gives every sibling its own stacking context; lift the search
+  // so its results panel opens over the buttons and trust strip below it.
+  position: relative;
+  z-index: 5;
   margin-top: 1.6rem;
-  padding: 0.4rem 0.4rem 0.4rem 1.1rem;
-  background: var(--surface);
-  border: 1px solid var(--border-strong);
-  border-radius: var(--radius-pill);
-  box-shadow: var(--shadow);
-  color: var(--text-soft);
-
-  &:focus-within {
-    border-color: var(--ember-500);
-  }
-
-  input {
-    flex: 1;
-    min-width: 0;
-    border: 0;
-    outline: none;
-    background: none;
-    color: var(--text);
-  }
-
-  .btn {
-    box-shadow: none;
-    padding-block: 0.75rem;
-  }
 }
 
 .hero__cta {
@@ -392,32 +368,6 @@ h2 em {
   }
 }
 
-.praise {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.4rem;
-
-  &__card {
-    padding: 2rem;
-    border-radius: var(--radius);
-    border: 1px solid var(--border);
-    background: var(--surface);
-
-    h3::before {
-      content: '“';
-      display: block;
-      font-size: 3.5rem;
-      line-height: 0.6;
-      color: var(--ember-400);
-    }
-
-    p {
-      margin: 0;
-      color: var(--text-soft);
-    }
-  }
-}
-
 .story {
   display: grid;
   grid-template-columns: 1fr 1.2fr;
@@ -475,8 +425,7 @@ h2 em {
     left: 0.8rem;
   }
 
-  .steps,
-  .praise {
+  .steps {
     grid-template-columns: 1fr;
   }
 

@@ -33,9 +33,6 @@ return function (App $app): void {
 
         $group->post('/uploads', [AdminCatalogController::class, 'upload']);
 
-        $group->get('/inquiries', [AdminOrderController::class, 'listInquiries']);
-        $group->patch('/inquiries/{id}', [AdminOrderController::class, 'updateInquiry']);
-
         $group->get('/coupons', [AdminOrderController::class, 'listCoupons']);
         $group->post('/coupons', [AdminOrderController::class, 'saveCoupon']);
         $group->put('/coupons/{id}', [AdminOrderController::class, 'saveCoupon']);

@@ -77,7 +77,7 @@ export class Gallery {
 
   constructor() {
     inject(SeoService).set({
-      title: 'Gallery — Small Chops, Grills & Party Platters',
+      title: 'Gallery: Small Chops, Grills & Party Platters',
       description: "Photos of Staga's Bites small chops, pastries, grills and event platters, made fresh in Oakville, Ontario.",
       path: '/gallery',
     });

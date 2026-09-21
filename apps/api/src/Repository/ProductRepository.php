@@ -43,8 +43,16 @@ class ProductRepository extends BaseRepository
             $qb->andWhere('p.isFeatured = true');
         }
         if (!empty($filters['search'])) {
-            $qb->andWhere('LOWER(p.name) LIKE :q OR LOWER(p.shortDescription) LIKE :q')
-                ->setParameter('q', '%' . mb_strtolower(addcslashes($filters['search'], '%_')) . '%');
+            // Names and categories match anywhere. Descriptions only match longer terms at the start of a
+            // word, otherwise "pie" would drag in every dish described as "a piece of chicken".
+            $term = mb_strtolower(addcslashes(trim($filters['search']), '%_'));
+            $where = 'LOWER(p.name) LIKE :q OR LOWER(c.name) LIKE :q';
+            $qb->setParameter('q', '%' . $term . '%');
+            if (mb_strlen($term) >= 4) {
+                $where .= ' OR LOWER(p.shortDescription) LIKE :qStart OR LOWER(p.shortDescription) LIKE :qWord';
+                $qb->setParameter('qStart', $term . '%')->setParameter('qWord', '% ' . $term . '%');
+            }
+            $qb->andWhere($where);
         }
 
         if (!empty($filters['ids'])) {
@@ -67,6 +75,12 @@ class ProductRepository extends BaseRepository
             // "Price" means the cheapest option, so sort on a correlated MIN() rather than in PHP after paging.
             $qb->addSelect('(SELECT MIN(po.price) FROM ' . ProductOption::class . ' po WHERE po.product = p) AS HIDDEN minPrice')
                 ->orderBy('minPrice', $sort === 'price_asc' ? 'ASC' : 'DESC')
+                ->addOrderBy('p.name', 'ASC');
+        } elseif ($sort === 'featured' && !empty($filters['search'])) {
+            // Searching: dishes whose name matches come before ones that only match on category or description.
+            $qb->addSelect('(CASE WHEN LOWER(p.name) LIKE :q THEN 0 ELSE 1 END) AS HIDDEN relevance')
+                ->orderBy('relevance', 'ASC')
+                ->addOrderBy('p.isFeatured', 'DESC')
                 ->addOrderBy('p.name', 'ASC');
         } else {
             match ($sort) {

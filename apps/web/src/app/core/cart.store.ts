@@ -20,7 +20,7 @@ export class CartStore {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(this._lines()));
       } catch {
-        // storage unavailable (private mode) — cart stays in memory
+        // storage unavailable (private mode), so the cart stays in memory
       }
     });
   }

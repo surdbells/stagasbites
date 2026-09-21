@@ -10,7 +10,6 @@ interface Stats {
   revenue_30d: number;
   orders_30d: number;
   open_orders: number;
-  new_inquiries: number;
   upcoming: Order[];
 }
 
@@ -25,7 +24,7 @@ interface Stats {
         <div class="card"><small>Revenue · 30 days</small><strong>{{ s.revenue_30d | money }}</strong></div>
         <div class="card"><small>Orders · 30 days</small><strong>{{ s.orders_30d }}</strong></div>
         <div class="card"><small>Open orders</small><strong>{{ s.open_orders }}</strong></div>
-        <a class="card" routerLink="/admin/inquiries"><small>New inquiries</small><strong>{{ s.new_inquiries }}</strong></a>
+        <a class="card" routerLink="/admin/subscribers"><small>Newsletter</small><strong>View list</strong></a>
       </div>
 
       <h2>Coming up</h2>

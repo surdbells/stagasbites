@@ -1,16 +1,18 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { catchError, map, of } from 'rxjs';
 import { CatalogService } from '../../core/catalog.service';
 import { SeoService } from '../../core/seo.service';
 import { SITE } from '../../core/site';
+import { GoogleReviews } from '../../shared/google-reviews';
+import { LiveSearch } from '../../shared/live-search';
 import { ProductCard } from '../../shared/product-card';
 import { RevealDirective } from '../../shared/reveal.directive';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterLink, ProductCard, RevealDirective],
+  imports: [RouterLink, ProductCard, RevealDirective, LiveSearch, GoogleReviews],
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './home.html',
   styleUrl: './home.scss',
@@ -18,7 +20,6 @@ import { RevealDirective } from '../../shared/reveal.directive';
 export class Home {
   private readonly catalog = inject(CatalogService);
   private readonly seo = inject(SeoService);
-  private readonly router = inject(Router);
 
   protected readonly site = SITE;
 
@@ -34,16 +35,9 @@ export class Home {
   protected readonly marquee = ['Samosas', 'Puff Puff', 'Asun', 'Meat Pies', 'Suya', 'Spring Rolls', 'Grilled Tilapia', 'Scotch Eggs', 'Peppered Wings', 'Party Platters'];
 
   protected readonly steps = [
-    { n: '01', title: 'Build your tray', text: 'Pick your small chops, grills and pastries — by the dozen, the tray or the platter.' },
+    { n: '01', title: 'Build your tray', text: 'Pick your small chops, grills and pastries by the dozen, the tray or the platter.' },
     { n: '02', title: 'Choose your slot', text: 'Select a weekend pickup or delivery window. We need about 48 hours to prep.' },
     { n: '03', title: 'We cook it fresh', text: 'Nothing is made ahead and frozen. Your order is cooked the day you collect it.' },
-  ];
-
-  /** Themes that come up again and again in our Google reviews — summarised, not quoted. */
-  protected readonly praise = [
-    { title: 'The spring rolls', text: 'Regularly called out by name. Thin, blistered wrappers and a filling that actually tastes of something.' },
-    { title: 'Party-ready presentation', text: 'Platters arrive arranged and labelled, so they go straight from the box to the table.' },
-    { title: 'On time, every time', text: 'Hosts tell us the same thing: the order was ready when we said it would be.' },
   ];
 
   constructor() {
@@ -68,9 +62,5 @@ export class Home {
         hasMenu: this.seo.absolute('/menu'),
       },
     });
-  }
-
-  goSearch(term: string): void {
-    this.router.navigate(['/menu'], { queryParams: term.trim() ? { q: term.trim() } : {} });
   }
 }

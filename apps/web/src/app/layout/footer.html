@@ -2,7 +2,7 @@
   <div class="container footer__cta">
     <div>
       <h2>Get first dibs on weekend specials</h2>
-      <p class="text-soft">New dishes, seasonal platters and the odd discount. No spam — unsubscribe any time.</p>
+      <p class="text-soft">New dishes, seasonal platters and the odd discount. No spam, and you can unsubscribe any time.</p>
     </div>
     <form class="footer__news" (ngSubmit)="subscribe()">
       <input type="email" name="email" [(ngModel)]="email" placeholder="you@example.com" aria-label="Email address" autocomplete="email" required />
@@ -17,7 +17,7 @@
     <div class="footer__about">
       <p class="footer__brand">Staga's <em>Bites</em></p>
       <p class="text-soft">
-        Authentic Nigerian small chops, pastries and flame-grilled favourites — made fresh to order in
+        Authentic Nigerian small chops, pastries and flame-grilled favourites, made fresh to order in
         {{ site.city }}, Ontario by a certified food handler.
       </p>
       <p class="footer__rating" aria-label="Rated 5 out of 5 on Google">
@@ -35,10 +35,9 @@
 
     <nav aria-label="Menu categories">
       <h3>Menu</h3>
-      <a routerLink="/menu/small-chops">Small Chops</a>
-      <a routerLink="/menu/grills">Grills</a>
-      <a routerLink="/menu/snacks">Snacks &amp; Pastries</a>
-      <a routerLink="/menu/platters">Platters &amp; Bulk</a>
+      @for (cat of categories(); track cat.id) {
+        <a [routerLink]="['/menu', cat.slug]">{{ cat.name }}</a>
+      }
       <a routerLink="/catering">Event Catering</a>
       <a routerLink="/gallery">Gallery</a>
     </nav>

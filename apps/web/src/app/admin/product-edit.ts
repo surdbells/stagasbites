@@ -65,7 +65,7 @@ import { ApiResponse, Category, Product } from '../core/models';
           <div class="field">
             <label for="cat">Category</label>
             <select id="cat" formControlName="category_id">
-              <option value="">— None —</option>
+              <option value="">No category</option>
               @for (c of categories(); track c.id) { <option [value]="c.id">{{ c.name }}</option> }
             </select>
           </div>

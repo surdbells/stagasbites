@@ -24,10 +24,10 @@ final class SeoController
     /** Static storefront routes: path => [title, description]. */
     private const PAGES = [
         '/' => ["Staga's Bites | Nigerian Small Chops, Pastries & Grills in Oakville", 'Authentic Nigerian small chops, meat pies, puff puff, suya and flame-grilled favourites in Oakville, ON. Pre-order for weekend pickup or delivery, or book us to cater your event.'],
-        '/menu' => ['Menu — Small Chops, Grills & Pastries', 'Browse the full Staga\'s Bites menu: samosas, spring rolls, puff puff, meat pies, asun, suya, grilled tilapia and party platters. Order online for pickup or delivery in the GTA.'],
+        '/menu' => ['Menu: Small Chops, Grills & Pastries', 'Browse the full Staga\'s Bites menu: samosas, spring rolls, puff puff, meat pies, asun, suya, grilled tilapia and party platters. Order online for pickup or delivery in the GTA.'],
         '/catering' => ['Nigerian Event Catering & Bulk Orders in Oakville & the GTA', 'Small chops, grills and pastries for weddings, birthdays, corporate events and house parties. Custom platters for any guest count. Request a catering quote today.'],
-        '/gallery' => ['Gallery — Small Chops, Grills & Party Platters', "Photos of Staga's Bites small chops, pastries, grills and event platters, made fresh in Oakville, Ontario."],
-        '/about' => ['Our Story', "Meet Staga's Bites — an award-winning, certified Nigerian kitchen in Oakville, Ontario, serving small chops, pastries and grills made fresh to order."],
+        '/gallery' => ['Gallery: Small Chops, Grills & Party Platters', "Photos of Staga's Bites small chops, pastries, grills and event platters, made fresh in Oakville, Ontario."],
+        '/about' => ['Our Story', "Meet Staga's Bites, an award-winning, certified Nigerian kitchen in Oakville, Ontario, serving small chops, pastries and grills made fresh to order."],
         '/contact' => ['Contact Us', "Questions, custom orders or catering? Call +1 (647) 673-8796 or message Staga's Bites in Oakville, Ontario. We reply within one business day."],
         '/faq' => ['Frequently Asked Questions', 'How pre-orders, pickup, delivery, lead times, allergens and catering work at Staga\'s Bites.'],
         '/legal/delivery' => ['Pickup & Delivery', 'Pickup and local delivery information for Staga\'s Bites orders in Oakville and the GTA.'],
@@ -131,7 +131,7 @@ final class SeoController
             $product = $this->products->findBySlug($m[1]);
             if ($product !== null && $product->isAvailable()) {
                 return [
-                    'title' => $product->getMetaTitle() ?? $product->getName() . ' — Order Online in Oakville',
+                    'title' => $product->getMetaTitle() ?? $product->getName() . ': Order Online in Oakville',
                     'description' => $product->getMetaDescription() ?? Str::truncate((string) ($product->getShortDescription() ?? $product->getDescription() ?? $product->getName()), 158),
                     'image' => $product->getImageUrl(),
                     'type' => 'product',
@@ -144,7 +144,7 @@ final class SeoController
             $category = $this->categories->findBySlug($m[1]);
             if ($category !== null && $category->isActive()) {
                 return [
-                    'title' => $category->getMetaTitle() ?? $category->getName() . ' — Order Online in Oakville & the GTA',
+                    'title' => $category->getMetaTitle() ?? $category->getName() . ': Order Online in Oakville & the GTA',
                     'description' => $category->getMetaDescription() ?? Str::truncate((string) ($category->getDescription() ?? $category->getName()), 158),
                     'image' => $category->getImageUrl(),
                 ] + $meta;

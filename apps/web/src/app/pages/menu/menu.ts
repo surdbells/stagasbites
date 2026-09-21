@@ -76,7 +76,7 @@ export class Menu {
         return; // categories still loading
       }
       this.seo.set({
-        title: cat ? `${cat.name} — Order Online in Oakville & the GTA` : 'Menu — Small Chops, Grills & Pastries',
+        title: cat ? `${cat.name}: Order Online in Oakville & the GTA` : 'Menu: Small Chops, Grills & Pastries',
         description:
           cat?.meta_description ??
           cat?.description ??

@@ -94,7 +94,7 @@ export class ProductPage {
     const description = product.meta_description ?? product.short_description ?? product.description ?? product.name;
 
     this.seo.set({
-      title: product.meta_title ?? `${product.name} — Order Online in Oakville`,
+      title: product.meta_title ?? `${product.name}: Order Online in Oakville`,
       description,
       path,
       image: product.image_url,

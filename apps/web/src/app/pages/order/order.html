@@ -45,7 +45,7 @@
             <h2>{{ o.fulfilment_method === 'delivery' ? 'Delivery' : 'Pickup' }}</h2>
             <p class="order__when">{{ o.fulfilment_date | date: 'EEEE, MMMM d' }}<br />{{ o.fulfilment_time_slot }}</p>
             <p class="text-soft">
-              {{ o.fulfilment_method === 'delivery' ? o.delivery_address : 'Oakville, ON — we’ll text you the exact pickup address.' }}
+              {{ o.fulfilment_method === 'delivery' ? o.delivery_address : 'Oakville, ON. We’ll text you the exact pickup address.' }}
             </p>
             @if (o.notes) {
               <p class="text-soft"><strong>Your notes:</strong> {{ o.notes }}</p>

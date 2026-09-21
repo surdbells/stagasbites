@@ -27,7 +27,7 @@ import { MoneyPipe } from '../shared/money.pipe';
             <tr>
               <td><img [src]="p.image_url || '/placeholder.svg'" alt="" /></td>
               <td><a [routerLink]="['/admin/products', p.id]">{{ p.name }}</a></td>
-              <td>{{ p.category?.name ?? '—' }}</td>
+              <td>{{ p.category?.name ?? 'Uncategorised' }}</td>
               <td>{{ p.price_from | money }}</td>
               <td>{{ p.options.length }}</td>
               <td>{{ p.is_available ? 'Yes' : 'Hidden' }}</td>

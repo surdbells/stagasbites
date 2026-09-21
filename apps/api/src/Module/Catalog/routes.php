@@ -11,6 +11,7 @@ return function (App $app): void {
         $group->get('/categories', [CatalogController::class, 'categories']);
         $group->get('/products', [CatalogController::class, 'products']);
         $group->get('/products/{slug}', [CatalogController::class, 'product']);
+        $group->get('/reviews', [CatalogController::class, 'reviews']);
         $group->get('/settings', [CatalogController::class, 'settings']);
     });
 };

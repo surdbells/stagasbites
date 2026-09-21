@@ -10,7 +10,7 @@
     </nav>
     <h1>{{ activeCategory()?.name ?? 'The Menu' }}</h1>
     <p class="lead">
-      {{ activeCategory()?.description ?? 'Everything is made to order. Pre-order by Wednesday for the weekend — pickup in Oakville or delivery across the west GTA.' }}
+      {{ activeCategory()?.description ?? 'Everything is made to order. Pre-order by Wednesday for the weekend, with pickup in Oakville or delivery across the west GTA.' }}
     </p>
   </div>
 </section>
@@ -56,7 +56,7 @@
 
     <div class="filters__group filters__note">
       <strong>Pickup &amp; delivery</strong>
-      <p>Pickup in Oakville is free. Delivery to Oakville, Burlington, Mississauga and Milton — choose at checkout.</p>
+      <p>Pickup in Oakville is free. Delivery to Oakville, Burlington, Mississauga and Milton. Choose at checkout.</p>
     </div>
 
     @if (activeFilters() > 0) {
@@ -101,7 +101,7 @@
 
     @if (!loading() && !failed() && products().length === 0) {
       <div class="empty">
-        <h2>Nothing matches that — yet.</h2>
+        <h2>Nothing matches that yet.</h2>
         <p class="text-soft">Try widening your filters, or tell us what you’re after and we’ll make it.</p>
         <div class="empty__cta">
           <button type="button" class="btn" (click)="clearFilters()">Clear filters</button>

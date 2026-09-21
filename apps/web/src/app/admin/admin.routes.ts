@@ -11,7 +11,6 @@ export const ADMIN_ROUTES: Routes = [
       { path: 'products', loadComponent: () => import('./products').then((m) => m.AdminProducts) },
       { path: 'products/:id', loadComponent: () => import('./product-edit').then((m) => m.AdminProductEdit) },
       { path: 'categories', loadComponent: () => import('./categories').then((m) => m.AdminCategories) },
-      { path: 'inquiries', loadComponent: () => import('./inquiries').then((m) => m.AdminInquiries) },
       { path: 'subscribers', loadComponent: () => import('./subscribers').then((m) => m.AdminSubscribers) },
       { path: 'coupons', loadComponent: () => import('./coupons').then((m) => m.AdminCoupons) },
       { path: 'settings', loadComponent: () => import('./settings').then((m) => m.AdminSettings) },

@@ -24,10 +24,10 @@ final class SettingsService
         'pickup_address' => 'Oakville, ON (exact address sent with your confirmation)',
         'phone' => '+1 (647) 673-8796',
         'email' => 'contact@stagasbites.ca',
-        'whatsapp' => null,
+        'whatsapp' => '16476738796',
         'instagram' => null,
         'facebook' => null,
-        'google_reviews_url' => null,
+        'google_reviews_url' => 'https://search.google.com/local/writereview?placeid=ChIJ218RGCxlK4gRtgqbVBx8Nks',
     ];
 
     /** @var array<string, mixed>|null */

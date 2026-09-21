@@ -15,6 +15,7 @@ use StagasBites\Module\Admin\AdminCatalogController;
 use StagasBites\Module\Seo\SeoController;
 use StagasBites\Repository\CategoryRepository;
 use StagasBites\Repository\ProductRepository;
+use StagasBites\Service\GoogleReviewsService;
 use StagasBites\Service\JwtService;
 use StagasBites\Service\MailService;
 use StagasBites\Service\StripeService;
@@ -59,6 +60,12 @@ return [
     MailService::class => fn (ContainerInterface $c): MailService => new MailService(
         $c->get(ZeptoMailService::class),
         $c->get('settings')['app']['site_url'],
+    ),
+
+    GoogleReviewsService::class => fn (ContainerInterface $c): GoogleReviewsService => new GoogleReviewsService(
+        $c->get('settings')['google'],
+        $c->get(CacheItemPoolInterface::class),
+        $c->get(LoggerInterface::class),
     ),
 
     StripeService::class => fn (ContainerInterface $c): StripeService => new StripeService(

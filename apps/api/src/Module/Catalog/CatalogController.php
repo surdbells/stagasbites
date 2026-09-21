@@ -11,6 +11,7 @@ use StagasBites\Exception\ApiException;
 use StagasBites\Helper\JsonResponse;
 use StagasBites\Repository\CategoryRepository;
 use StagasBites\Repository\ProductRepository;
+use StagasBites\Service\GoogleReviewsService;
 use StagasBites\Service\SettingsService;
 
 final class CatalogController
@@ -19,6 +20,7 @@ final class CatalogController
         private readonly CategoryRepository $categories,
         private readonly ProductRepository $products,
         private readonly SettingsService $settings,
+        private readonly GoogleReviewsService $reviews,
     ) {
     }
 
@@ -75,6 +77,11 @@ final class CatalogController
     public function settings(Request $request, Response $response): Response
     {
         return self::cacheable(JsonResponse::success($response, $this->settings->all()));
+    }
+
+    public function reviews(Request $request, Response $response): Response
+    {
+        return JsonResponse::success($response, $this->reviews->summary())->withHeader('Cache-Control', 'public, max-age=600');
     }
 
     private static function cacheable(Response $response): Response

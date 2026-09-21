@@ -15,7 +15,7 @@ export class WishlistStore {
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(this._ids()));
       } catch {
-        // storage unavailable — the list simply lasts for this visit
+        // storage unavailable, so the list simply lasts for this visit
       }
     });
   }

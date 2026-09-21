@@ -35,7 +35,7 @@ interface Coupon {
               <tr>
                 <td><strong>{{ c.code }}</strong></td>
                 <td>{{ c.type === 'percent' ? c.value + '%' : (c.value | money) }}</td>
-                <td>{{ c.min_subtotal ? (c.min_subtotal | money) : '—' }}</td>
+                <td>{{ c.min_subtotal ? (c.min_subtotal | money) : 'None' }}</td>
                 <td>{{ c.times_redeemed }}{{ c.max_redemptions ? ' / ' + c.max_redemptions : '' }}</td>
                 <td>{{ c.expires_at ? (c.expires_at | date: 'mediumDate') : 'Never' }}</td>
                 <td>{{ c.is_active ? 'Yes' : 'No' }}</td>

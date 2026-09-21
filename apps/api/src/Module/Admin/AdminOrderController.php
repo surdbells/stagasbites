@@ -7,13 +7,11 @@ namespace StagasBites\Module\Admin;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use StagasBites\Entity\Coupon;
-use StagasBites\Entity\Inquiry;
 use StagasBites\Entity\Order;
 use StagasBites\Entity\OrderStatus;
 use StagasBites\Exception\ApiException;
 use StagasBites\Helper\JsonResponse;
 use StagasBites\Repository\CouponRepository;
-use StagasBites\Repository\InquiryRepository;
 use StagasBites\Repository\OrderRepository;
 use StagasBites\Service\MailService;
 use StagasBites\Service\SettingsService;
@@ -24,7 +22,6 @@ final class AdminOrderController
 {
     public function __construct(
         private readonly OrderRepository $orders,
-        private readonly InquiryRepository $inquiries,
         private readonly CouponRepository $coupons,
         private readonly SettingsService $settings,
         private readonly MailService $mail,
@@ -36,7 +33,6 @@ final class AdminOrderController
     {
         $stats = $this->orders->dashboardStats();
         $stats['upcoming'] = array_map(static fn (Order $o): array => $o->toArray(), $stats['upcoming']);
-        $stats['new_inquiries'] = count($this->inquiries->findBy(['status' => 'new']));
 
         return JsonResponse::success($response, $stats);
     }
@@ -83,25 +79,6 @@ final class AdminOrderController
         }
 
         return JsonResponse::success($response, $order->toArray());
-    }
-
-    public function listInquiries(Request $request, Response $response): Response
-    {
-        $all = $this->inquiries->findBy([], ['createdAt' => 'DESC']);
-
-        return JsonResponse::success($response, array_map(static fn (Inquiry $i): array => $i->toArray(), array_slice($all, 0, 200)));
-    }
-
-    public function updateInquiry(Request $request, Response $response, string $id): Response
-    {
-        $data = $this->validator->validate((array) $request->getParsedBody(), [
-            'status' => [new Assert\NotBlank(), new Assert\Choice(['new', 'in_progress', 'closed'])],
-        ]);
-        $inquiry = $this->inquiries->findOrFail($id);
-        $inquiry->setStatus($data['status']);
-        $this->inquiries->save($inquiry);
-
-        return JsonResponse::success($response, $inquiry->toArray());
     }
 
     public function listCoupons(Request $request, Response $response): Response

@@ -11,7 +11,7 @@ interface LegalDoc {
 
 /**
  * Starter policy copy. These are sensible defaults for a made-to-order food business in Ontario,
- * NOT legal advice — have them reviewed before launch.
+ * NOT legal advice. Have them reviewed before launch.
  */
 const DOCS: Record<string, LegalDoc> = {
   delivery: {
@@ -46,7 +46,7 @@ const DOCS: Record<string, LegalDoc> = {
     title: 'Privacy Policy',
     description: "How Staga's Bites collects, uses and protects your personal information.",
     sections: [
-      { heading: 'What we collect', body: ['Your name, email, phone number, delivery address and order details — only what we need to prepare and deliver your order and to contact you about it.'] },
+      { heading: 'What we collect', body: ['Your name, email, phone number, delivery address and order details. We collect only what we need to prepare and deliver your order and to contact you about it.'] },
       { heading: 'Payments', body: ['Card payments are processed by Stripe. Your card details go directly to Stripe and never touch our servers.'] },
       { heading: 'Email', body: ['We send transactional emails (order confirmations and updates) through ZeptoMail. We do not sell or rent your information to anyone.'] },
       { heading: 'Your rights', body: ['You can ask us for a copy of your data, or to correct or delete it, at any time by emailing us. We handle personal information in line with Canada’s PIPEDA.'] },

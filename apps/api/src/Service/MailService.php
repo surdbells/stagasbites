@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace StagasBites\Service;
 
-use StagasBites\Entity\Inquiry;
 use StagasBites\Entity\Order;
 use StagasBites\Entity\OrderStatus;
 use StagasBites\Entity\User;
@@ -20,7 +19,7 @@ final class MailService
     public function sendWelcome(User $user): void
     {
         $body = '<p>Hi ' . Str::e($user->getFirstName()) . ',</p>'
-            . "<p>Welcome to Staga's Bites! Your account is ready — you can now track your orders and re-order your favourites in a couple of taps.</p>"
+            . "<p>Welcome to Staga's Bites! Your account is ready. You can now track your orders and re-order your favourites in a couple of taps.</p>"
             . $this->button('Browse the menu', $this->siteUrl . '/menu');
 
         $this->zepto->send($user->getEmail(), $user->getFullName(), "Welcome to Staga's Bites", $this->layout('Welcome to the table', $body));
@@ -45,7 +44,7 @@ final class MailService
             : 'Pickup in Oakville (we will text you the exact address)';
 
         $body = '<p>Hi ' . Str::e($order->getCustomerFirstName()) . ',</p>'
-            . '<p>Thank you — your payment went through and your order is confirmed. We cook everything fresh for your slot.</p>'
+            . '<p>Thank you! Your payment went through and your order is confirmed. We cook everything fresh for your slot.</p>'
             . '<p><strong>' . Str::e($when) . '</strong><br>' . $how . '</p>'
             . $this->orderTable($order)
             // The order UUID is an unguessable capability, so guests can open the page without signing in.
@@ -74,7 +73,7 @@ final class MailService
         $this->zepto->send(
             $this->zepto->adminEmail(),
             "Staga's Bites",
-            'New order ' . $order->getOrderNumber() . ' — ' . Str::money($order->getTotal(), $order->getCurrency()),
+            'New order ' . $order->getOrderNumber() . ' (' . Str::money($order->getTotal(), $order->getCurrency()) . ')',
             $this->layout('New order received', $body),
             $order->getCustomerEmail(),
         );
@@ -87,7 +86,7 @@ final class MailService
             OrderStatus::READY => $order->getFulfilmentMethod() === 'delivery'
                 ? 'Your order is packed and on its way to you.'
                 : 'Your order is ready for pickup.',
-            OrderStatus::COMPLETED => 'Your order is complete. Thank you for choosing us — we hope every bite was perfect.',
+            OrderStatus::COMPLETED => 'Your order is complete. Thank you for choosing us. We hope every bite was perfect.',
             OrderStatus::CANCELLED => 'Your order has been cancelled. If you were charged, a refund is on its way. Reply to this email with any questions.',
             OrderStatus::REFUNDED => 'Your order has been refunded. It can take 5–10 business days to appear on your statement.',
             default => null,
@@ -105,31 +104,6 @@ final class MailService
             'Order ' . $order->getOrderNumber() . ': ' . $order->getStatus()->label(),
             $this->layout($order->getStatus()->label(), $body),
         );
-    }
-
-    public function sendInquiryAlert(Inquiry $inquiry): void
-    {
-        $data = $inquiry->toArray();
-        $rows = '';
-        foreach (['name' => 'Name', 'email' => 'Email', 'phone' => 'Phone', 'event_type' => 'Event', 'event_date' => 'Date', 'guest_count' => 'Guests'] as $key => $label) {
-            if (!empty($data[$key])) {
-                $rows .= '<tr><td style="padding:4px 12px 4px 0;color:#8a7d70">' . $label . '</td><td>' . Str::e((string) $data[$key]) . '</td></tr>';
-            }
-        }
-        $body = '<table role="presentation" style="font-size:15px">' . $rows . '</table>'
-            . '<p style="white-space:pre-line">' . Str::e($data['message']) . '</p>';
-        $title = $data['type'] === Inquiry::TYPE_CATERING ? 'New catering request' : 'New contact message';
-
-        $this->zepto->send($this->zepto->adminEmail(), "Staga's Bites", $title . ' from ' . $data['name'], $this->layout($title, $body), $data['email']);
-    }
-
-    public function sendInquiryReceipt(Inquiry $inquiry): void
-    {
-        $data = $inquiry->toArray();
-        $body = '<p>Hi ' . Str::e($data['name']) . ',</p>'
-            . "<p>Thanks for reaching out — we've received your message and will get back to you within one business day.</p>";
-
-        $this->zepto->send($data['email'], $data['name'], "We've got your message", $this->layout('Thanks for getting in touch', $body));
     }
 
     private function orderTable(Order $order): string

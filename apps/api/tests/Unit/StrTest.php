@@ -12,7 +12,7 @@ final class StrTest extends TestCase
     public function testSlug(): void
     {
         self::assertSame('asun-spicy-roast-goat-meat', Str::slug('Asun (Spicy Roast Goat Meat)'));
-        self::assertSame('snails-spicy-peppered', Str::slug('Snails — Spicy / Peppered'));
+        self::assertSame('snails-spicy-peppered', Str::slug('Snails: Spicy / Peppered'));
     }
 
     public function testMoney(): void

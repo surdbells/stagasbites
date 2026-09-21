@@ -1,6 +1,6 @@
 # Staga's Bites
 
-Ecommerce platform for Staga's Bites — Nigerian small chops, pastries and grills in Oakville, Ontario.
+Ecommerce platform for Staga's Bites: Nigerian small chops, pastries and grills in Oakville, Ontario.
 
 | Path | What |
 |---|---|
@@ -39,14 +39,26 @@ Admin lives at `/admin` (sign in with the admin account).
    `checkout.session.completed`, `checkout.session.async_payment_succeeded`,
    `checkout.session.async_payment_failed`, `checkout.session.expired`.
 
-Orders are only marked paid by the signed webhook — never by the browser redirect. The webhook
+Orders are only marked paid by the signed webhook, never by the browser redirect. The webhook
 fails closed if the secret is missing, is idempotent per Stripe event id, and checks the charged
 amount against the order total.
 
 ### ZeptoMail
 
 Set `ZEPTOMAIL_API_KEY` (the "Send Mail token"), a verified `ZEPTOMAIL_FROM_EMAIL`, and
-`ADMIN_NOTIFY_EMAIL`. Without a key, emails are skipped and logged — nothing breaks.
+`ADMIN_NOTIFY_EMAIL`. Without a key, emails are skipped and logged, and nothing breaks.
+
+### Google reviews
+
+The home page shows live reviews from the Google Business listing (Place ID `ChIJ218RGCxlK4gRtgqbVBx8Nks`).
+
+1. In Google Cloud Console, enable **Places API (New)** and create an API key.
+2. Restrict the key to that API (and to the server's IP).
+3. Set `GOOGLE_PLACES_API_KEY` in `apps/api/.env`.
+
+The key never reaches the browser: the API fetches the reviews and caches them for an hour. Until a key is
+set, the section still shows the rating with "read" and "write a review" links. Google returns at most five
+reviews per listing through this API.
 
 ## SEO without SSR
 

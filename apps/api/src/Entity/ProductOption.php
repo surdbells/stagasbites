@@ -7,7 +7,7 @@ namespace StagasBites\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 
-/** A purchasable size of a product, e.g. "Tray of 50" — price is in minor units (cents). */
+/** A purchasable size of a product, e.g. "Tray of 50". The price is in minor units (cents). */
 #[ORM\Entity]
 #[ORM\Table(name: 'product_options')]
 #[ORM\Index(name: 'idx_option_product', columns: ['product_id'])]
