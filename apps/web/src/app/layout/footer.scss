@@ -48,13 +48,12 @@
 }
 
 .footer__brand {
-  font-family: var(--font-display);
-  font-size: 1.8rem;
-  color: var(--heading);
-  margin-bottom: 0.6rem;
+  display: block;
+  margin-bottom: 1rem;
 
-  em {
-    color: var(--gold-400);
+  img {
+    width: 220px;
+    height: auto;
   }
 }
 

@@ -261,6 +261,7 @@ final class SeoController
             'name' => self::SITE_NAME,
             'url' => $this->siteUrl . '/',
             'image' => $this->siteUrl . '/og-default.jpg',
+            'logo' => $this->siteUrl . '/img/brand/icon-512.png',
             'telephone' => '+1-647-673-8796',
             'email' => 'contact@stagasbites.ca',
             'servesCuisine' => ['Nigerian', 'West African', 'African'],

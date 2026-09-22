@@ -81,6 +81,7 @@ export class Home {
         name: SITE.name,
         url: this.seo.absolute('/'),
         image: this.seo.absolute('/og-default.jpg'),
+        logo: this.seo.absolute('/img/brand/icon-512.png'),
         telephone: '+1-647-673-8796',
         email: SITE.email,
         servesCuisine: ['Nigerian', 'West African', 'African'],

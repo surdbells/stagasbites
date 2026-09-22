@@ -40,12 +40,13 @@
   }
 
   &__brand {
-    font-family: var(--font-display);
-    font-size: 1.4rem;
+    display: grid;
+    gap: 0.3rem;
     padding: 0 0.9rem;
 
-    em {
-      color: var(--gold-400);
+    img {
+      height: 40px;
+      width: auto;
     }
 
     small {

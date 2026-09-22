@@ -12,7 +12,7 @@ import { SeoService } from '../core/seo.service';
   template: `
     <div class="adm">
       <aside class="adm__side">
-        <a routerLink="/" class="adm__brand">Staga's <em>Bites</em><small>Admin</small></a>
+        <a routerLink="/" class="adm__brand"><img src="/img/brand/logo-horizontal-ink.webp" alt="Staga's Bites" width="144" height="40" /><small>Admin</small></a>
         <nav aria-label="Admin">
           @for (link of links; track link.path) {
             <a [routerLink]="link.path" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: link.path === '/admin' }">{{ link.label }}</a>

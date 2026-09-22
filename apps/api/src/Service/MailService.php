@@ -142,7 +142,7 @@ final class MailService
         return '<!doctype html><html><body style="margin:0;background:#f7eedf;font-family:Helvetica,Arial,sans-serif;color:#2e231d">'
             . '<table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td align="center" style="padding:32px 16px">'
             . '<table role="presentation" width="100%" style="max-width:580px;background:#fffaf2;border-radius:16px;overflow:hidden">'
-            . '<tr><td style="background:#17110e;padding:22px 32px;color:#f7eedf;font-family:Georgia,serif;font-size:22px">Staga\'s <span style="color:#f0b24a">Bites</span></td></tr>'
+            . '<tr><td style="background:#17110e;padding:18px 32px"><img src="' . Str::e($this->siteUrl) . '/img/brand/logo-email.png" alt="Staga&#039;s Bites" width="120" style="display:block;width:120px;height:auto"></td></tr>'
             . '<tr><td style="padding:32px;font-size:16px;line-height:1.6"><h1 style="font-family:Georgia,serif;font-weight:normal;font-size:26px;margin:0 0 18px">' . Str::e($heading) . '</h1>' . $body . '</td></tr>'
             . '<tr><td style="padding:20px 32px;background:#f3e7d3;font-size:13px;color:#8a7d70">Staga\'s Bites · Oakville, Ontario · +1 (647) 673-8796 · contact@stagasbites.ca</td></tr>'
             . '</table></td></tr></table></body></html>';

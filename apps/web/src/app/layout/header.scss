@@ -27,17 +27,10 @@
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  font-family: var(--font-display);
-  font-size: 1.45rem;
-  color: var(--heading);
 
-  &__mark {
-    color: var(--ember-400);
-  }
-
-  em {
-    color: var(--gold-400);
+  img {
+    height: 44px;
+    width: auto;
   }
 }
 
@@ -143,6 +136,10 @@
 }
 
 @media (max-width: 900px) {
+  .brand img {
+    height: 38px;
+  }
+
   .burger {
     display: grid;
   }
