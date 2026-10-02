@@ -4,6 +4,6 @@
  */
 export const environment = {
   production: true,
-  apiUrl: 'https://api.stagasbites.ca/api/v1',
-  siteUrl: 'https://stagasbites.ca',
+  apiUrl: 'https://api.kodekinnovations.com/api/v1',
+  siteUrl: 'https://stagasbites.kodekinnovations.com',
 };
